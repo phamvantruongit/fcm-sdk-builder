@@ -1,7 +1,5 @@
 package biz.appvisor.push.android.sdk;
 
-import biz.appvisor.push.android.sdk.AppVisorPushUtil.RichPushImage;
-import biz.appvisor.push.android.sdk.CommonAsyncTack.AsyncTaskCallback;
 import android.app.IntentService;
 import android.app.KeyguardManager;
 import android.app.Notification;
@@ -14,6 +12,9 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
+
+import biz.appvisor.push.android.sdk.AppVisorPushUtil.RichPushImage;
+import biz.appvisor.push.android.sdk.CommonAsyncTack.AsyncTaskCallback;
 
 public class RichPushIntentService extends IntentService implements AsyncTaskCallback
 {

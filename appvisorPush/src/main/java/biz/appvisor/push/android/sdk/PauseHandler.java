@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import java.util.Vector;
+
 /**
  * Message Handler class that supports buffering up of messages when the
  * activity is paused i.e. in the background.

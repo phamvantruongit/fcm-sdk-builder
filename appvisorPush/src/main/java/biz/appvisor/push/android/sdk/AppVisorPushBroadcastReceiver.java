@@ -1,7 +1,8 @@
 package biz.appvisor.push.android.sdk;
 
-import com.google.android.gcm.GCMBroadcastReceiver;
 import android.content.Context;
+
+import com.google.android.gcm.GCMBroadcastReceiver;
 
 public class AppVisorPushBroadcastReceiver extends GCMBroadcastReceiver 
 {

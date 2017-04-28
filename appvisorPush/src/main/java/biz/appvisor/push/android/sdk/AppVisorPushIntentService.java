@@ -1,7 +1,5 @@
 package biz.appvisor.push.android.sdk;
 
-import java.util.HashMap;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,6 +13,8 @@ import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gcm.GCMBaseIntentService;
+
+import java.util.HashMap;
 
 public class AppVisorPushIntentService extends GCMBaseIntentService{
 	

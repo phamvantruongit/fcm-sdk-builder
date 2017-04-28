@@ -1,15 +1,15 @@
 package biz.appvisor.push.android.sdk;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import biz.appvisor.push.android.sdk.AppVisorPushUtil.BitmapResizeHelper;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 
 public class CommonAsyncTack extends AsyncTask<String, Integer, Bitmap> {
 	

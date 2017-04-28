@@ -28,4 +28,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:21.0.3'
     testCompile 'junit:junit:4.12'
+
+    compile files('libs/gcm.jar')
 }

@@ -1,18 +1,5 @@
 package biz.appvisor.push.android.sdk;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Locale;
-import java.util.UUID;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -36,6 +23,19 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
+import java.util.UUID;
 
 public class AppVisorPushUtil 
 {	
@@ -749,7 +749,7 @@ public class AppVisorPushUtil
         try 
         {
             // Create MD5 Hash
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(s.getBytes());
             byte messageDigest[] = digest.digest();
 
@@ -759,32 +759,32 @@ public class AppVisorPushUtil
                 hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
             return hexString.toString();
 
-        } 
-        catch (NoSuchAlgorithmException e) 
+        }
+        catch (NoSuchAlgorithmException e)
         {
             e.printStackTrace();
         }
         return "";
     }
-    
+
     //Get UUID from Old Sdk DataBase if exist.
     static String getOldVersionUUID(Context context , String apiKey)
     {
     	final String DBFileName = "biz.apptracker.android.%s.sqlite";
-    	
+
     	SQLiteDatabase trackingDB = null;
     	String returnValue = null;
-    	
+
     	try
         {
     		trackingDB = new OldPersistenceHelper(context, String.format(DBFileName, apiKey)).getWritableDatabase();
-    		
+
     		Cursor result = null;
-        	
+
 	        try
 	        {
 	        	result = trackingDB.rawQuery(String.format("SELECT device_id FROM apptracker WHERE api_key = '%s'", apiKey), null);
-	
+
 	            if (result == null || result.getCount() == 0)
 	            {
 	            	returnValue = "";
@@ -822,10 +822,10 @@ public class AppVisorPushUtil
         		trackingDB.close();
         	}
         }
-    	
+
     	return returnValue;
     }
-    
+
     final static class OldPersistenceHelper extends SQLiteOpenHelper
     {
         public OldPersistenceHelper(final Context context, final String name)
@@ -846,7 +846,7 @@ public class AppVisorPushUtil
         public void onOpen(final SQLiteDatabase db)
         {
             super.onOpen(db);
-            
+
             appVisorPushLog("SQLite has been opened");
 
             if (!db.isReadOnly())
@@ -857,11 +857,11 @@ public class AppVisorPushUtil
 
         @Override
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion)
-        { 
+        {
         }
-        
+
     }
-    
+
     final static class ByteStream
     {
     	static public byte[] toByteArray(InputStream inputStream) throws IOException
@@ -874,11 +874,11 @@ public class AppVisorPushUtil
     			buffer.write(data, 0, nRead);
     		}
     		buffer.flush();
-    		
+
     		return buffer.toByteArray();
     	}
     }
-    
+
     final static class Screen
     {
     	@SuppressLint("NewApi") @SuppressWarnings("deprecation")
@@ -886,10 +886,10 @@ public class AppVisorPushUtil
     	{
     		WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
     		Display display = windowManager.getDefaultDisplay();
-    		
+
     		Point size = new Point();
-    		
-    		if (13 > Integer.valueOf(android.os.Build.VERSION.SDK_INT))
+
+    		if (13 > Integer.valueOf(Build.VERSION.SDK_INT))
     		{
     			size.x = display.getWidth();
     			size.y = display.getHeight();

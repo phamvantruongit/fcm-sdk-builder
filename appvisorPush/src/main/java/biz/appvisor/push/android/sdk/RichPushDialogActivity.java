@@ -1,6 +1,5 @@
 package biz.appvisor.push.android.sdk;
 
-import biz.appvisor.push.android.sdk.AppVisorPushUtil.RichPushImage;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.KeyguardManager;
@@ -24,9 +23,9 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -35,6 +34,8 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import biz.appvisor.push.android.sdk.AppVisorPushUtil.RichPushImage;
 
 public class RichPushDialogActivity extends Activity {
 	private Context  applicationContext = null;
