@@ -35,10 +35,6 @@
             </intent-filter>
         </activity>
 
-        <permission android:name="my_app_package.permission.C2D_MESSAGE"
-                    android:protectionLevel="signature" />
-        <uses-permission android:name="my_app_package.permission.C2D_MESSAGE" />
-
         <receiver
             android:name="biz.appvisor.push.android.sdk.AppVisorPushBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
