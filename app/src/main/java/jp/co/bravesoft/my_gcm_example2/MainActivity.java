@@ -23,7 +23,8 @@ public class MainActivity extends ActionBarActivity
         String appID = "uIxoJSuq6b";
         this.appVisorPush.setAppInfor(getApplicationContext(), appID);
 //通知関連の内容を設定します。(送信者ID,通知アイコン,ステータスバーアイコン,通知で起動するClass名、デフォルトの通知タイトル)
-        this.appVisorPush.startPush("407066157166", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));
+        //this.appVisorPush.startPush("407066157166", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));
+        this.appVisorPush.startPush("890273406421", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));
 
 //Push反応率チェック(必須)
         this.appVisorPush.trackPushWithActivity(this);

@@ -31,3 +31,4 @@ dependencies {
 
     compile project(":appvisorPush")
 }
+apply plugin: 'com.google.gms.google-services'

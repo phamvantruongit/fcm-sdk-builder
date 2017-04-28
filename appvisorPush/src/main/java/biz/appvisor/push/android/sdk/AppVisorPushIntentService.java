@@ -1,5 +1,7 @@
 package biz.appvisor.push.android.sdk;
 
+import java.util.HashMap;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,8 +15,6 @@ import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gcm.GCMBaseIntentService;
-
-import java.util.HashMap;
 
 public class AppVisorPushIntentService extends GCMBaseIntentService{
 	
@@ -149,17 +149,18 @@ public class AppVisorPushIntentService extends GCMBaseIntentService{
 					
 					return;
 				}
-				
+
+				NotificationManager notiManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				if (urlFlag != null) {
 					// URL Mode
-					this.showUrlNotification(titleStr, messageStr, context,
-							pushIDStr, vibrationOnOff);
+					showUrlNotification(titleStr, messageStr, context,
+							pushIDStr, vibrationOnOff, notiManager );
 				} else {
-
 					// Normal Mode
-					this.showNotification(titleStr, messageStr, context,
-							callBackClass, pushIDStr, hashMap, vibrationOnOff);
+					showNotification(titleStr, messageStr, context,
+							callBackClass, pushIDStr, hashMap, vibrationOnOff, notiManager );
 				}
+
 			}
 
 		}
@@ -167,11 +168,9 @@ public class AppVisorPushIntentService extends GCMBaseIntentService{
 		this.stopSelf();
 	}
 
-	protected void showUrlNotification(String title, String message,
-			Context context, String pushIDStr, boolean vibrationOnOff) {
+	protected static void showUrlNotification(String title, String message,
+			Context context, String pushIDStr, boolean vibrationOnOff, NotificationManager notiManager) {
 		AppVisorPushUtil.appVisorPushLog("show Url Notification start");
-
-		NotificationManager notiManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		int pushIconResourceId = AppVisorPushUtil.getPushIconID(context);
 		int statusbarIconResourceId = AppVisorPushUtil
@@ -267,7 +266,7 @@ public class AppVisorPushIntentService extends GCMBaseIntentService{
 		}
 
 		notif.defaults |= Notification.DEFAULT_SOUND;
-		if (this.checkIsVibrateEnable(context) && vibrationOnOff) {
+		if (checkIsVibrateEnable(context) && vibrationOnOff) {
 			notif.defaults |= Notification.DEFAULT_VIBRATE;
 		}
 		notif.flags = Notification.FLAG_AUTO_CANCEL;
@@ -284,12 +283,10 @@ public class AppVisorPushIntentService extends GCMBaseIntentService{
 		AppVisorPushUtil.appVisorPushLog("show Url Notification end");
 	}
 
-	protected void showNotification(String title, String message,
+	protected static void showNotification(String title, String message,
 			Context context, Class<?> cls, String pushIDStr,
-			HashMap<String, String> hashMap, boolean vibrationOnOff) {
+			HashMap<String, String> hashMap, boolean vibrationOnOff, NotificationManager notiManager) {
 		AppVisorPushUtil.appVisorPushLog("show Normal Notification start");
-
-		NotificationManager notiManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		int pushIconResourceId = AppVisorPushUtil.getPushIconID(context);
 		int statusbarIconResourceId = AppVisorPushUtil
@@ -377,7 +374,7 @@ public class AppVisorPushIntentService extends GCMBaseIntentService{
 		}
 
 		notif.defaults |= Notification.DEFAULT_SOUND;
-		if (this.checkIsVibrateEnable(context) && vibrationOnOff) {
+		if (checkIsVibrateEnable(context) && vibrationOnOff) {
 			notif.defaults |= Notification.DEFAULT_VIBRATE;
 		}
 		notif.flags = Notification.FLAG_AUTO_CANCEL;
@@ -431,7 +428,7 @@ public class AppVisorPushIntentService extends GCMBaseIntentService{
 		return senderIDs;
 	}
 
-	protected boolean checkIsVibrateEnable(Context context) {
+	protected static boolean checkIsVibrateEnable(Context context) {
 		boolean result = false;
 		ApplicationInfo appInfo = context.getApplicationInfo();
 		String appPackageName = appInfo.packageName;

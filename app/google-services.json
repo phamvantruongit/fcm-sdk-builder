@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "890273406421",
+    "firebase_url": "https://fcmsdktest-48c57.firebaseio.com",
+    "project_id": "fcmsdktest-48c57",
+    "storage_bucket": "fcmsdktest-48c57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:890273406421:android:1caa3d1cd559f059",
+        "android_client_info": {
+          "package_name": "jp.co.bravesoft.my_gcm_example2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "890273406421-lto87o4vvhk8c3s7ci533h8me3lh53re.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWX3jXApttyzs_Ickk_AKLKk5Bsk85IjU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

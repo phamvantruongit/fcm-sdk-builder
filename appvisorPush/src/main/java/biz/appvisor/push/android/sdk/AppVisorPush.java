@@ -1,4 +1,22 @@
 package biz.appvisor.push.android.sdk;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,27 +30,9 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.google.android.gcm.GCMRegistrar;
+import com.google.firebase.iid.FirebaseInstanceId;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-public class AppVisorPush
+public class AppVisorPush 
 {
     public final static int	UserPropertyGroup1        = 1;
     public final static int	UserPropertyGroup2        = 2;
@@ -51,7 +51,10 @@ public class AppVisorPush
     private static Handler pushSenderHandler = null;
     
     public ChangePushStatusListener changeStatusListener;
-    
+
+	private MessagingInterface messagingInterface = null;
+	private boolean launched = false;
+
 	public static AppVisorPush sharedInstance( )
 	{
 		if(_appvisorPushInstance == null)
@@ -90,6 +93,9 @@ public class AppVisorPush
         }
         
         this.appContext 	= !(context.getClass().getName().equals("android.test.RenamingDelegatingContext")) && AppVisorPushSetting.thisApiLevel >= 8 ? context.getApplicationContext() : context;
+//		this.messagingInterface = new GoogleMessagingInterface(this.appContext);
+		this.messagingInterface = new FirebaseMessagingInterface();
+
         this.appTrackingKey = trackingKey;
         
         AppVisorPushUtil.saveAppTrackingKey( this.appContext , this.appTrackingKey );
@@ -179,41 +185,56 @@ public class AppVisorPush
     	
     	this.setUserPropertyWithGroup(uimid , UserPropertyGroup1);
     	*/
-    	try
-    	{
-    		GCMRegistrar.checkDevice( this.appContext );
-    	}catch(Exception e){
-    		AppVisorPushUtil.appVisorPushWaring("UnsupportedOperationException", e);
-    		return;
-    	}
-    	      
-   	 	final String deviceToken = GCMRegistrar.getRegistrationId( this.appContext );
-   	 	
-   	 	if (null == deviceToken || deviceToken.equals("")) 
-   	 	{
-   	 		AppVisorPushUtil.appVisorPushLog("start resgister device token");
-   	 		GCMRegistrar.register( this.appContext, senderID );
-   	 	}
-   	 	else
-   	 	{
-   	 		AppVisorPushUtil.appVisorPushLog( "already had device token:" + deviceToken );
-   	 		AppVisorPushUtil.savePushToken(this.appContext, deviceToken);
-   	 		//send user info only when token EXISTS
-   	 		if (isInService)
-   	 		{	
-   	 			AppVisorPush.startSendDeviceInfor(this.appContext, true);
-   	 		}
-   	 		else
-   	 		{
-   	 			AppVisorPush.startSendDeviceInfor(this.appContext);
-   	 		}
-   	 		
+
+		this.messagingInterface.checkDevice();
+
+		if ( this.messagingInterface.requiresRegistration() )
+		{
+			this.messagingInterface.register( senderID );
+		}
+		else
+		{
+			this.launchWithToken(isInService);
    	 	}
 	}
-	
-	
-	
-    
+
+	public void refreshTokenIfUpdated()
+	{
+		final String deviceToken = this.messagingInterface.getDeviceToken();
+		if (AppVisorPushUtil.getPushToken(this.appContext) != null &&
+                AppVisorPushUtil.getPushToken(this.appContext).equals(deviceToken)) {
+			return;
+		}
+
+		// シェアに保存して
+		AppVisorPushUtil.savePushToken(this.appContext, deviceToken);
+
+		// サーバに同期
+        pushSenderHandler.sendMessage( pushSenderHandler.obtainMessage( AppVisorPushSetting.msgRefreshPushToken ) );
+	}
+
+	public boolean launchWithTokenIfYet(boolean isInService)
+	{
+		if (this.launched)
+		{
+			return false;
+		}
+		this.launched = true;
+        launchWithToken(isInService);
+
+		return true;
+	}
+
+	private void launchWithToken(boolean isInService)
+	{
+		this.launched = true;
+		final String deviceToken = this.messagingInterface.getDeviceToken();
+		AppVisorPushUtil.appVisorPushLog( "already had device token:" + deviceToken );
+		AppVisorPushUtil.savePushToken(this.appContext, deviceToken);
+		//send user info only when token EXISTS
+        AppVisorPush.startSendDeviceInfor(this.appContext, isInService);
+	}
+
     static void startSendDeviceInfor(Context context)
     {
     	AppVisorPush.startSendDeviceInfor(context, false);
@@ -398,8 +419,8 @@ public class AppVisorPush
 		{
 			 throw new IllegalArgumentException("The context of application is required!");
 		}
-		
-		if ( GCMRegistrar.isRegistered( this.appContext ) )
+
+		if ( this.messagingInterface.isRegistered() )
 		{ 
 			int statusByInt = onOff ? 1 : 0;
 			
@@ -570,8 +591,7 @@ public class AppVisorPush
     		_appvisorPushInstance.changeStatusListener.changeStatusSucceeded( result );
     	}
     }
-    
-    
+
 	static class AppVisorPushSender extends Handler
     {
         private final String appTrackingKey;
@@ -740,6 +760,20 @@ public class AppVisorPush
                 		}
                 		break;
                 	}
+					case AppVisorPushSetting.msgRefreshPushToken:
+					{
+						try
+						{
+							if( AppVisorPushUtil.getAppStatus( this.appContext ) != AppVisorPushSetting.APP_STATUS_KEY_KL)
+							{
+								refreshPushToken();
+							}
+						}
+						finally
+						{
+						}
+						break;
+					}
                 	default:
                 	{
                 		throw new RuntimeException("Unknow Message Exception.");
@@ -1141,6 +1175,141 @@ public class AppVisorPush
                 
             }
         }
+
+		private boolean refreshPushToken()
+		{
+        	final DefaultHttpClient client = new DefaultHttpClient();
+            final HttpPost method = new HttpPost(AppVisorPushSetting.PUSH_PROPERTY_URL);
+            try
+            {
+            	String deviceUUID = AppVisorPushUtil.getDeviceUUID( this.appContext , this.appTrackingKey );
+            	List<NameValuePair> postParams = new ArrayList<NameValuePair>();
+
+            	postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_C , "user" ) );
+        		postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_A , "refreshToken" ) );
+        		postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_APP_TRACKING_KEY , this.appTrackingKey ) );
+        		postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_DEVICE_UUID, deviceUUID ) );
+				postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_DEVICE_TOKEN, "aaa") );
+
+        		method.setEntity(new UrlEncodedFormEntity(postParams, "UTF-8"));
+                final HttpResponse response = client.execute(method);
+
+                final StatusLine statusLine = response.getStatusLine();
+                final int statusCode = statusLine.getStatusCode();
+
+                AppVisorPushUtil.appVisorPushLog( String.format("communication completely with status code: %d", Integer.valueOf(statusCode)) );
+
+                if (statusCode >= 500 && statusCode <= 599)
+                {
+                	AppVisorPushUtil.appVisorPushLog( "synchronize user properties failed. Error code:" + statusCode );
+                    return false;
+                }
+                else
+                {
+                	AppVisorPushUtil.appVisorPushLog( "synchronize user properties succeed.");
+                	return true;
+                }
+            }
+            catch (final UnsupportedEncodingException e)
+            {
+            	AppVisorPushUtil.appVisorPushWaring( "UnsupportedEncodingException" , e );
+            	return false;
+            }
+            catch (final ClientProtocolException e)
+            {
+            	AppVisorPushUtil.appVisorPushWaring( "ClientProtocolException" , e );
+            	return false;
+            }
+            catch (final IOException e)
+            {
+            	AppVisorPushUtil.appVisorPushWaring( "IOException" , e );
+            	return false;
+            }
+            finally
+            {
+            }
+		}
     }
-	
+
+	interface MessagingInterface
+	{
+		boolean isRegistered();
+		void checkDevice();
+		String getDeviceToken();
+		boolean requiresRegistration();
+		void register(String senderID);
+	}
+
+	static class GoogleMessagingInterface implements MessagingInterface
+	{
+		Context context;
+
+		GoogleMessagingInterface (Context context)
+		{
+			this.context = context;
+		}
+
+		public boolean isRegistered()
+		{
+            return GCMRegistrar.isRegistered( this.context );
+		}
+
+		public void checkDevice()
+		{
+			try
+			{
+				GCMRegistrar.checkDevice( this.context );
+			}
+			catch(Exception e)
+			{
+				AppVisorPushUtil.appVisorPushWaring("UnsupportedOperationException", e);
+				return;
+			}
+		}
+
+		public String getDeviceToken()
+		{
+			return GCMRegistrar.getRegistrationId( this.context );
+		}
+
+		public boolean requiresRegistration()
+		{
+			String deviceToken = getDeviceToken();
+			return null == deviceToken || deviceToken.equals("");
+		}
+
+		public void register( String senderID )
+		{
+			AppVisorPushUtil.appVisorPushLog("start resgister device token");
+			GCMRegistrar.register( this.context, senderID );
+		}
+	}
+
+	static class FirebaseMessagingInterface implements MessagingInterface
+	{
+		public boolean isRegistered()
+		{
+			return FirebaseInstanceId.getInstance().getToken() != null;
+		}
+
+		public void checkDevice()
+		{
+			return;
+		}
+
+		public String getDeviceToken()
+		{
+			return FirebaseInstanceId.getInstance().getToken();
+		}
+
+		public boolean requiresRegistration()
+		{
+			return getDeviceToken() == null || getDeviceToken().equals("");
+		}
+
+		public void register( String senderID )
+		{
+		}
+
+	}
 }

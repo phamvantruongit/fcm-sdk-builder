@@ -49,7 +49,8 @@ public class AppVisorPushSetting
     public static final int msgSetPushStatusFailed 		   = 5;
     public static final int msgDoSynchronizeUserProperties = 6;
     public static final int msgDoSendPushTokenInService    = 7;
-    
+    public static final int msgRefreshPushToken  		   = 8;
+
     
     //Application status key
     public static final int APP_STATUS_KEY_OK			= 1;
