@@ -44,14 +44,15 @@ class AppVisorPushFirebaseMessagingService extends FirebaseMessagingService
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        //Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         Map<String, String> m = remoteMessage.getData();
+        /*
         // Check if message contains a data payload.
         if (m.size() > 0) {
             Log.d(TAG, "Message data payload: " + m);
-
-            if (/* Check if data needs to be processed by long running job */ true) {
+            // Check if data needs to be processed by long running job
+            if ( true) {
                 // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
 //                scheduleJob();
             } else {
@@ -62,7 +63,7 @@ class AppVisorPushFirebaseMessagingService extends FirebaseMessagingService
         for (Map.Entry<String, String> entry : m.entrySet()) {
             System.out.println("key ->" + entry.getKey() + ", value->" + entry.getValue());
         }
-
+        */
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
@@ -114,7 +115,6 @@ class AppVisorPushFirebaseMessagingService extends FirebaseMessagingService
                     title,
                     message,
                     context,
-                    //clazz,
                     callBackClass,
                     pushIdStr,
                     hashMap,
@@ -127,9 +127,9 @@ class AppVisorPushFirebaseMessagingService extends FirebaseMessagingService
     /**
      * Handle time allotted to BroadcastReceivers.
      */
-    private void handleNow() {
-        Log.d(TAG, "Short lived task is done.");
-    }
+    //private void handleNow() {
+     //   Log.d(TAG, "Short lived task is done.");
+    //}
 
 
 }
