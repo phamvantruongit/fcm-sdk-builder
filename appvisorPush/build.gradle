@@ -1,16 +1,17 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 21
     buildToolsVersion "21.0.0"
 
     defaultConfig {
-        applicationId "jp.co.bravesoft.my_gcm_example2"
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -27,7 +28,4 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:21.0.3'
     testCompile 'junit:junit:4.12'
-    compile files('libs/gcm.jar')
-
-    compile project(":appvisorPush")
 }

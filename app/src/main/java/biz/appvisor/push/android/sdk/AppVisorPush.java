@@ -31,7 +31,7 @@ import android.text.TextUtils;
 
 import com.google.android.gcm.GCMRegistrar;
 
-public class AppVisorPush 
+public class AppVisorPush
 {
     public final static int	UserPropertyGroup1        = 1;
     public final static int	UserPropertyGroup2        = 2;
