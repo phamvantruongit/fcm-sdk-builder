@@ -1189,7 +1189,7 @@ public class AppVisorPush
         		postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_A , "refreshToken" ) );
         		postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_APP_TRACKING_KEY , this.appTrackingKey ) );
         		postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_DEVICE_UUID, deviceUUID ) );
-				postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_DEVICE_TOKEN, "aaa") );
+				postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_DEVICE_TOKEN, AppVisorPushUtil.getPushToken( this.appContext ) ) );
 
         		method.setEntity(new UrlEncodedFormEntity(postParams, "UTF-8"));
                 final HttpResponse response = client.execute(method);
