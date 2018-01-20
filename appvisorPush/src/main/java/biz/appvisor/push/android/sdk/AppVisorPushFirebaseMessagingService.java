@@ -90,9 +90,6 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         String message = m.get(AppVisorPushSetting.KEY_PUSH_MESSAGE);
         String pushIdStr = m.get(AppVisorPushSetting.KEY_PUSH_TRACKING_ID);
         String urlFlag = m.get(AppVisorPushSetting.KEY_PUSH_URL);
-
-        String appvisor_sn = m.get(AppVisorPushSetting.KEY_SILENCE_NOTIFICATION);
-
         Context context = getApplicationContext();
 
         if ("1".equals(m.get(AppVisorPushSetting.KEY_BACKGROUND_NOTIFICATION))) {
@@ -121,6 +118,9 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
             }
         }
 
+        if ("1".equals(m.get(AppVisorPushSetting.KEY_SILENCE_NOTIFICATION))) {
+            return;
+        }
 
         if (urlFlag != null) {
             AppVisorPushIntentService.showUrlNotification(
