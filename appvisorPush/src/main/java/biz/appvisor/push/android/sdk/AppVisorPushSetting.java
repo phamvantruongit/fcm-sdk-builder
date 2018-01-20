@@ -103,4 +103,11 @@ public class AppVisorPushSetting
     // Rich Push Const
     public final static String RICH_PUSH_IMAGE			= "1";
     public final static String RICH_PUSH_WEB			= "2";
+
+    // Default notification channel const
+    public final static String DEFAULT_NOTIFICATION_CHANNEL_ID = "appvisor_default_notification_channel";
+    public final static String DEFAULT_NOTIFICATION_CHANNEL_NAME = "Default";
+    public final static String DEFAULT_NOTIFICATION_CHANNEL_DESCRIPTION = "Default notification channel";
+    public final static int DEFAULT_NOTIFICATION_CHANNEL_IMPORTANCE = 4;
+    public final static long[] DEFAULT_NOTIFICATION_CHANNEL_VIBRATION_PATTERN = new long[]{100, 200, 300, 400, 500, 400, 300, 200, 500};
 }

@@ -2,6 +2,7 @@ package biz.appvisor.push.android.sdk;
 
 import java.util.HashMap;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -213,29 +214,22 @@ public class AppVisorPushIntentService extends GCMBaseIntentService{
 				(int) System.currentTimeMillis(), notificationIntent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		Notification notif;
 		String notifTitle = "";
-
 		if (title != null && title.length() > 0) {
 			notifTitle = title;
 		} else {
 			notifTitle = appName;
 		}
 
-		if (AppVisorPushSetting.thisApiLevel < 11) {
-			// OS Version under Android 3.0
-			notif = new Notification(pushIconResourceId, notifTitle,
-					System.currentTimeMillis());
-			notif.setLatestEventInfo(context, notifTitle, message,
-					contentIntent);
-		} else if (AppVisorPushSetting.thisApiLevel < 16) {
+		Resources resources = context.getResources();
+		Bitmap largeIconImage = BitmapFactory.decodeResource(resources,
+				pushIconResourceId);
+
+		Notification notif = new Notification();
+
+		if (AppVisorPushSetting.thisApiLevel < 16) {
 			// OS Version in Android 3.0 ‾ 4.1
-			Resources resources = context.getResources();
-			Bitmap largeIconImage = BitmapFactory.decodeResource(resources,
-					pushIconResourceId);
-
-			NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(
-					context);
+			NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(context);
 
 			notifBuilder.setContentTitle(notifTitle);
 			notifBuilder.setContentText(message);
@@ -244,31 +238,32 @@ public class AppVisorPushIntentService extends GCMBaseIntentService{
 			notifBuilder.setContentIntent(contentIntent);
 
 			notif = notifBuilder.build();
-		} else {
+		} else if (AppVisorPushSetting.thisApiLevel < 26) {
 			// OS Version after Android 4.1
-			Resources resources = context.getResources();
-			Bitmap largeIconImage = BitmapFactory.decodeResource(resources,
-					pushIconResourceId);
-
-			NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(
-					context);
+			NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(context);
 
 			notifBuilder.setContentTitle(notifTitle);
 			notifBuilder.setContentText(message);
 			notifBuilder.setSmallIcon(statusbarIconResourceId);
 			notifBuilder.setLargeIcon(largeIconImage);
 			notifBuilder.setContentIntent(contentIntent);
-			notifBuilder.setStyle(new NotificationCompat.BigTextStyle()
-					.bigText(message));
+			notifBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 
 			notif = notifBuilder.build();
 
+		} else {
+			// OS Version after Android 8.0
+//			notif = this.notifyWithChannelId(context, message, notifTitle, statusbarIconResourceId, contentIntent);
+			notif = notifyWithChannelId(
+					context,
+					message,
+					notifTitle,
+					statusbarIconResourceId,
+					largeIconImage,
+					contentIntent
+			);
 		}
 
-		notif.defaults |= Notification.DEFAULT_SOUND;
-		if (checkIsVibrateEnable(context) && vibrationOnOff) {
-			notif.defaults |= Notification.DEFAULT_VIBRATE;
-		}
 		notif.flags = Notification.FLAG_AUTO_CANCEL;
 
 		int pushID = 0;
@@ -324,7 +319,6 @@ public class AppVisorPushIntentService extends GCMBaseIntentService{
 				(int) System.currentTimeMillis(), intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		Notification notif;
 		String notifTitle = "";
 		if (title != null && title.length() > 0) {
 			notifTitle = title;
@@ -332,20 +326,15 @@ public class AppVisorPushIntentService extends GCMBaseIntentService{
 			notifTitle = appName;
 		}
 
-		if (AppVisorPushSetting.thisApiLevel < 11) {
-			// OS Version under Android 3.0
-			notif = new Notification(pushIconResourceId, notifTitle,
-					System.currentTimeMillis());
-			notif.setLatestEventInfo(context, notifTitle, message,
-					contentIntent);
-		} else if (AppVisorPushSetting.thisApiLevel < 16) {
+		Resources resources = context.getResources();
+		Bitmap largeIconImage = BitmapFactory.decodeResource(resources,
+				pushIconResourceId);
+
+		Notification notif = new Notification();
+
+		if (AppVisorPushSetting.thisApiLevel < 16) {
 			// OS Version in Android 3.0 ‾ 4.1
-			Resources resources = context.getResources();
-			Bitmap largeIconImage = BitmapFactory.decodeResource(resources,
-					pushIconResourceId);
-
-			NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(
-					context);
+			NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(context);
 
 			notifBuilder.setContentTitle(notifTitle);
 			notifBuilder.setContentText(message);
@@ -354,29 +343,31 @@ public class AppVisorPushIntentService extends GCMBaseIntentService{
 			notifBuilder.setContentIntent(contentIntent);
 
 			notif = notifBuilder.build();
-		} else {
+		} else if (AppVisorPushSetting.thisApiLevel < 26) {
 			// OS Version after Android 4.1
-			Resources resources = context.getResources();
-			Bitmap largeIconImage = BitmapFactory.decodeResource(resources,
-					pushIconResourceId);
+			NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(context);
 
-			NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(
-					context);
-			notifBuilder.setContentText(message);
 			notifBuilder.setContentTitle(notifTitle);
+			notifBuilder.setContentText(message);
 			notifBuilder.setSmallIcon(statusbarIconResourceId);
 			notifBuilder.setLargeIcon(largeIconImage);
 			notifBuilder.setContentIntent(contentIntent);
-			notifBuilder.setStyle(new NotificationCompat.BigTextStyle()
-					.bigText(message));
+			notifBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 
 			notif = notifBuilder.build();
+
+		} else {
+			// OS Version after Android 8.0
+			notif = notifyWithChannelId(
+					context,
+					message,
+					notifTitle,
+					statusbarIconResourceId,
+					largeIconImage,
+					contentIntent
+			);
 		}
 
-		notif.defaults |= Notification.DEFAULT_SOUND;
-		if (checkIsVibrateEnable(context) && vibrationOnOff) {
-			notif.defaults |= Notification.DEFAULT_VIBRATE;
-		}
 		notif.flags = Notification.FLAG_AUTO_CANCEL;
 
 		int pushID = 0;
@@ -389,9 +380,25 @@ public class AppVisorPushIntentService extends GCMBaseIntentService{
 		notiManager.notify(pushID, notif);
 
 		AppVisorPushUtil.appVisorPushLog("show Normal Notification Finished");
-
 	}
-	
+
+
+	@TargetApi(26)
+	protected static Notification notifyWithChannelId(Context context, String message,
+											   String notifTitle, int statusbarIconResourceId,
+											   Bitmap largeIconImage, PendingIntent contentIntent) {
+
+		AppVisorPushUtil.appVisorPushLog("Push notification to default channel id");
+
+		return new Notification.Builder(context, AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_ID)
+				.setContentTitle(notifTitle)
+				.setContentText(message)
+				.setSmallIcon(statusbarIconResourceId)
+				.setLargeIcon(largeIconImage)
+				.setContentIntent(contentIntent)
+				.build();
+	}
+
 	protected void showRichNotification(String title, String message,
 			final Context context, String className, String pushIDStr,
 			HashMap<String, String> hashMap, boolean vibrationOnOff,

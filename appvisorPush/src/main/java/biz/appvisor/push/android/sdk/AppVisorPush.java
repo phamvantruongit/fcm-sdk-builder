@@ -18,7 +18,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +31,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -101,8 +105,31 @@ public class AppVisorPush
         AppVisorPushUtil.saveAppTrackingKey( this.appContext , this.appTrackingKey );
         
         AppVisorPushSetting.allowLogOutput = debuggable;
+
+
+		if (AppVisorPushSetting.thisApiLevel >= 26) {
+			this.setDefaultNotificationChannel();
+		}
 	}
-	
+
+	@TargetApi(26)
+	public void setDefaultNotificationChannel() {
+
+		NotificationManager mNotificationManager =
+				(NotificationManager) this.appContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		NotificationChannel mChannel = new NotificationChannel(
+				AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_ID,
+				AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_NAME,
+				AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_IMPORTANCE
+		);
+		mChannel.setDescription(AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_DESCRIPTION);
+		mChannel.enableVibration(true);
+		mChannel.setVibrationPattern(AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_VIBRATION_PATTERN);
+
+		mNotificationManager.createNotificationChannel(mChannel);
+	}
+
 	public String getDeviceID()
 	{
 		if (this.appContext == null)
