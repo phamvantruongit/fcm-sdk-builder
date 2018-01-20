@@ -92,18 +92,10 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         String urlFlag = m.get(AppVisorPushSetting.KEY_PUSH_URL);
 
         String appvisor_sn = m.get(AppVisorPushSetting.KEY_SILENCE_NOTIFICATION);
-        String appvisor_bn = m.get(AppVisorPushSetting.KEY_BACKGROUND_NOTIFICATION);
-
-        boolean is_background;
-        if ("1".equals(appvisor_bn)) {
-            is_background = true;
-        } else {
-            is_background = false;
-        }
 
         Context context = getApplicationContext();
 
-        if (is_background) {
+        if ("1".equals(m.get(AppVisorPushSetting.KEY_BACKGROUND_NOTIFICATION))) {
             String serviceName = AppVisorPushUtil
                     .getPushCallbackServiceName(context);
 
