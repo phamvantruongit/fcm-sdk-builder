@@ -19,7 +19,7 @@ import biz.appvisor.push.android.sdk.AppVisorPushSetting;
  * Created by hirayamatakaaki on 2017/03/29.
  */
 
-class AppVisorPushFirebaseMessagingService extends FirebaseMessagingService
+public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingService
 {
 
     private static final String TAG = "AppVisorFCMService";

@@ -13,7 +13,7 @@ import biz.appvisor.push.android.sdk.AppVisorPushUtil;
  * Created by hirayamatakaaki on 2017/03/29.
  */
 
-class AppVisorPushFirebaseInstanceIDService extends FirebaseInstanceIdService
+public class AppVisorPushFirebaseInstanceIDService extends FirebaseInstanceIdService
 {
     private static final String TAG = "AppVisorFCMIIDService";
 
