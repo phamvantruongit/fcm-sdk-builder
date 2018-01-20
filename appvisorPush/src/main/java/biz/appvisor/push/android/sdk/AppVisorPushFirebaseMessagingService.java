@@ -10,6 +10,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import biz.appvisor.push.android.sdk.AppVisorPushIntentService;
@@ -90,7 +91,44 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         String pushIdStr = m.get(AppVisorPushSetting.KEY_PUSH_TRACKING_ID);
         String urlFlag = m.get(AppVisorPushSetting.KEY_PUSH_URL);
 
+        String appvisor_sn = m.get(AppVisorPushSetting.KEY_SILENCE_NOTIFICATION);
+        String appvisor_bn = m.get(AppVisorPushSetting.KEY_BACKGROUND_NOTIFICATION);
+
+        boolean is_background;
+        if ("1".equals(appvisor_bn)) {
+            is_background = true;
+        } else {
+            is_background = false;
+        }
+
         Context context = getApplicationContext();
+
+        if (is_background) {
+            String serviceName = AppVisorPushUtil
+                    .getPushCallbackServiceName(context);
+
+            if (serviceName != null && !"".equals(serviceName)) {
+                Class<?> callBackService = null;
+                try {
+                    callBackService = Class.forName(serviceName);
+                } catch (ClassNotFoundException e) {
+//					e.printStackTrace();
+                }
+                Intent intent = new Intent();
+                Iterator i = m.keySet().iterator();
+                while (i.hasNext()) {
+                    String key = (String)i.next();
+                    intent.putExtra(key, m.get(key));
+                }
+                intent.removeExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT);
+                intent.putExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT,
+                        true);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setClass(context, callBackService);
+                startService(intent);
+            }
+        }
+
 
         if (urlFlag != null) {
             AppVisorPushIntentService.showUrlNotification(
