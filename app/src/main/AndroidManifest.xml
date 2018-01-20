@@ -41,6 +41,8 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".BackgroundPushNotificationReceiveService" />
+
         <receiver
             android:name="biz.appvisor.push.android.sdk.AppVisorPushBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
