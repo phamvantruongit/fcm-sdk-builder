@@ -4,7 +4,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="26" />
 
     <permission
         android:name="jp.co.bravesoft.my_gcm_example2.permission.C2D_MESSAGE"

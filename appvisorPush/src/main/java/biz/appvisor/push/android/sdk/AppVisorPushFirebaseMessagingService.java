@@ -33,6 +33,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
     // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        Log.d(TAG, "onMessageReceived");
         // [START_EXCLUDE]
         // There are two types of messages data messages and notification messages. Data messages are handled
         // here in onMessageReceived whether the app is in the foreground or background. Data messages are the type
@@ -114,6 +115,8 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
                         true);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.setClass(context, callBackService);
+
+                Log.d(TAG, "just before call startService?.");
                 startService(intent);
             }
         }
