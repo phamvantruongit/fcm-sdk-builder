@@ -2,6 +2,9 @@ package biz.appvisor.push.android.sdk;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -24,7 +27,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
 {
 
     private static final String TAG = "AppVisorFCMService";
-
+    public static Class<?> clazz;
     /**
      * Called when message is received.
      *
@@ -97,13 +100,15 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
             String serviceName = AppVisorPushUtil
                     .getPushCallbackServiceName(context);
 
-            if (serviceName != null && !"".equals(serviceName)) {
-                Class<?> callBackService = null;
+            if (true || serviceName != null && !"".equals(serviceName)) {
+                //Class<?> callBackService = null;
+                /*
                 try {
                     callBackService = Class.forName(serviceName);
                 } catch (ClassNotFoundException e) {
 //					e.printStackTrace();
                 }
+                */
                 Intent intent = new Intent();
                 Iterator i = m.keySet().iterator();
                 while (i.hasNext()) {
@@ -114,10 +119,22 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
                 intent.putExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT,
                         true);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.setClass(context, callBackService);
+                //intent.setClass(context, callBackService);
 
-                Log.d(TAG, "just before call startService?.");
-                startService(intent);
+                Log.d(TAG, "just before call startService.");
+                //startService(intent);
+                //context.startForegroundService()
+
+                Log.d(TAG, "just before call schedule.");
+                ComponentName mServiceName = new ComponentName(this, clazz);
+                JobScheduler scheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                    JobInfo jobInfo = new JobInfo.Builder(0, mServiceName)
+                            .setMinimumLatency(3000)
+                            .setOverrideDeadline(10000)
+                            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                            .build();
+                    scheduler.schedule(jobInfo);
+
             }
         }
 
