@@ -413,7 +413,26 @@ public class AppVisorPushUtil
     	editor.putString( AppVisorPushSetting.SHARED_PREFERENCES_PARA_CLASS_NAME , className);
     	editor.commit();
     }
-    
+
+    //load Push Callback Service Name
+    static String getPushCallbackJobServiceName(Context context)
+    {
+        String serviceName = "";
+        SharedPreferences prefer = context.getSharedPreferences(AppVisorPushSetting.SHARED_PREFERENCES_KEY ,Context.MODE_PRIVATE);
+        serviceName = prefer.getString(AppVisorPushSetting.SHARED_PREFERENCES_PARA_JOB_SERVICE_NAME, "");
+
+        return serviceName;
+    }
+
+    //save Push Callback Service Name
+    static void savePushCallbackJobServiceName(Context context,String serviceName )
+    {
+        SharedPreferences prefer = context.getSharedPreferences(AppVisorPushSetting.SHARED_PREFERENCES_KEY ,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefer.edit();
+        editor.putString( AppVisorPushSetting.SHARED_PREFERENCES_PARA_JOB_SERVICE_NAME, serviceName);
+        editor.commit();
+    }
+
     //load Push Callback Service Name
     static String getPushCallbackServiceName(Context context)
     {

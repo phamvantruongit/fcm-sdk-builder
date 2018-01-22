@@ -28,6 +28,7 @@ public class AppVisorPushSetting
 	public final static String SHARED_PREFERENCES_PARA_SENDER_ID		 = "push_sender_id";
 	public final static String SHARED_PREFERENCES_PARA_CLASS_NAME		 = "callback_class";
 	public final static String SHARED_PREFERENCES_PARA_SERVICE_NAME		 = "callback_service";
+    public final static String SHARED_PREFERENCES_PARA_JOB_SERVICE_NAME		 = "callback_job_service";
 	public final static String SHARED_PREFERENCES_PARA_APP_NAME			 = "app_name";
 	public final static String SHARED_PREFERENCES_PARA_ICON_ID			 = "push_icon_id";
 	public final static String SHARED_PREFERENCES_PARA_TRACKING_KEY		 = "tracking_key";

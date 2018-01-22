@@ -1,12 +1,13 @@
 package biz.appvisor.push.android.sdk;
 
+import android.annotation.TargetApi;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PersistableBundle;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -16,9 +17,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import biz.appvisor.push.android.sdk.AppVisorPushIntentService;
-import biz.appvisor.push.android.sdk.AppVisorPushSetting;
-
 /**
  * Created by hirayamatakaaki on 2017/03/29.
  */
@@ -27,7 +25,6 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
 {
 
     private static final String TAG = "AppVisorFCMService";
-    public static Class<?> clazz;
     /**
      * Called when message is received.
      *
@@ -97,70 +94,10 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         Context context = getApplicationContext();
 
         if ("1".equals(m.get(AppVisorPushSetting.KEY_BACKGROUND_NOTIFICATION))) {
-            String serviceName = AppVisorPushUtil
-                    .getPushCallbackServiceName(context);
-
-            if (true || serviceName != null && !"".equals(serviceName)) {
-                if (AppVisorPushSetting.thisApiLevel >= 26) {
-
-                    Class<?> callBackService = null;
-                    try {
-                        callBackService = Class.forName(serviceName);
-                    } catch (ClassNotFoundException e) {
-//					e.printStackTrace();
-                    }
-                    Intent intent = new Intent();
-                    Iterator i = m.keySet().iterator();
-                    while (i.hasNext()) {
-                        String key = (String) i.next();
-                        intent.putExtra(key, m.get(key));
-                    }
-                    intent.removeExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT);
-                    intent.putExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT,
-                            true);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    //intent.setClass(context, callBackService);
-
-                    Log.d(TAG, "just before call startService.");
-                    //startService(intent);
-                    //context.startForegroundService()
-
-                    Log.d(TAG, "just before call schedule.");
-                    ComponentName mServiceName = new ComponentName(this, clazz);
-                    JobScheduler scheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-                    JobInfo jobInfo = new JobInfo.Builder(0, mServiceName)
-                            .setMinimumLatency(3000)
-                            .setOverrideDeadline(10000)
-                            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                            .build();
-                    scheduler.schedule(jobInfo);
-
-                } else {
-
-                    if (serviceName != null && !"".equals(serviceName)) {
-                        Class<?> callBackService = null;
-                        try {
-                            callBackService = Class.forName(serviceName);
-                        } catch (ClassNotFoundException e) {
-//					e.printStackTrace();
-                        }
-                        Intent intent = new Intent();
-                        Iterator i = m.keySet().iterator();
-                        while (i.hasNext()) {
-                            String key = (String) i.next();
-                            intent.putExtra(key, m.get(key));
-                        }
-                        intent.removeExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT);
-                        intent.putExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT,
-                                true);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.setClass(context, callBackService);
-
-                        Log.d(TAG, "just before call startService?.");
-                        startService(intent);
-                    }
-
-                }
+            if (AppVisorPushSetting.thisApiLevel < 26) {
+                startBackgroundService(context, m);
+            } else {
+                startJobService(context, m);
             }
         }
 
@@ -199,14 +136,70 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         }
     }
 
-    // [END receive_message]
-    /**
-     * Handle time allotted to BroadcastReceivers.
-     */
-    //private void handleNow() {
-     //   Log.d(TAG, "Short lived task is done.");
-    //}
+    private void startBackgroundService(Context context, Map<String, String> m) {
+        String serviceName = AppVisorPushUtil
+                .getPushCallbackServiceName(context);
 
+        if (serviceName == null || "".equals(serviceName)) {
+            return;
+        }
+
+        Class<?> callBackService = null;
+        try {
+            callBackService = Class.forName(serviceName);
+        } catch (ClassNotFoundException e) {
+//					e.printStackTrace();
+        }
+
+        Intent intent = new Intent();
+        Iterator i = m.keySet().iterator();
+        while (i.hasNext()) {
+            String key = (String) i.next();
+            intent.putExtra(key, m.get(key));
+        }
+        intent.putExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT, true);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setClass(context, callBackService);
+
+        Log.d(TAG, "just before call startBackgroundService?.");
+        startService(intent);
+    }
+
+    @TargetApi(26)
+    private void startJobService(Context context, Map<String, String> m) {
+        String serviceName = AppVisorPushUtil
+                .getPushCallbackJobServiceName(context);
+
+        if (serviceName == null || "".equals(serviceName)) {
+            return;
+        }
+
+        Class<?> callBackService = null;
+        try {
+            callBackService = Class.forName(serviceName);
+        } catch (ClassNotFoundException e) {
+//					e.printStackTrace();
+        }
+
+        PersistableBundle bundle = new PersistableBundle();
+        Iterator i = m.keySet().iterator();
+        while (i.hasNext()) {
+            String key = (String) i.next();
+            bundle.putString(key, m.get(key));
+        }
+
+        ComponentName mServiceName = new ComponentName(this, callBackService);
+        JobScheduler scheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        JobInfo jobInfo = new JobInfo.Builder(0, mServiceName)
+                .setMinimumLatency(3000)
+                .setOverrideDeadline(10000)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setExtras(bundle)
+                .build();
+
+        Log.d(TAG, "just before call schedule.");
+        scheduler.schedule(jobInfo);
+    }
 
 }
 

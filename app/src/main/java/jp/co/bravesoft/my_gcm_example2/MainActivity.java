@@ -41,11 +41,10 @@ public class MainActivity extends ActionBarActivity
 
         //if (1) { // APIレベルを判定
         if (AppVisorPushSetting.thisApiLevel >= 26) {
-            AppVisorPushFirebaseMessagingService.clazz = MyJobService.class;
+            this.appVisorPush.setJobService(MyJobService.class.getName());
         }
 
         this.appVisorPush.setService(BackgroundPushNotificationReceiveService.class.getName());
-        //this.appVisorPush.setService(BackgroundPushNotificationReceiveService.class.getName());
     }
 
     //必須
