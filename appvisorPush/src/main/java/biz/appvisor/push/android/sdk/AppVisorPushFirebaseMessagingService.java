@@ -101,33 +101,33 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
                     .getPushCallbackServiceName(context);
 
             if (true || serviceName != null && !"".equals(serviceName)) {
-                //Class<?> callBackService = null;
-                /*
-                try {
-                    callBackService = Class.forName(serviceName);
-                } catch (ClassNotFoundException e) {
+                if (AppVisorPushSetting.thisApiLevel >= 26) {
+
+                    Class<?> callBackService = null;
+                    try {
+                        callBackService = Class.forName(serviceName);
+                    } catch (ClassNotFoundException e) {
 //					e.printStackTrace();
-                }
-                */
-                Intent intent = new Intent();
-                Iterator i = m.keySet().iterator();
-                while (i.hasNext()) {
-                    String key = (String)i.next();
-                    intent.putExtra(key, m.get(key));
-                }
-                intent.removeExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT);
-                intent.putExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT,
-                        true);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //intent.setClass(context, callBackService);
+                    }
+                    Intent intent = new Intent();
+                    Iterator i = m.keySet().iterator();
+                    while (i.hasNext()) {
+                        String key = (String) i.next();
+                        intent.putExtra(key, m.get(key));
+                    }
+                    intent.removeExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT);
+                    intent.putExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT,
+                            true);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    //intent.setClass(context, callBackService);
 
-                Log.d(TAG, "just before call startService.");
-                //startService(intent);
-                //context.startForegroundService()
+                    Log.d(TAG, "just before call startService.");
+                    //startService(intent);
+                    //context.startForegroundService()
 
-                Log.d(TAG, "just before call schedule.");
-                ComponentName mServiceName = new ComponentName(this, clazz);
-                JobScheduler scheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                    Log.d(TAG, "just before call schedule.");
+                    ComponentName mServiceName = new ComponentName(this, clazz);
+                    JobScheduler scheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
                     JobInfo jobInfo = new JobInfo.Builder(0, mServiceName)
                             .setMinimumLatency(3000)
                             .setOverrideDeadline(10000)
@@ -135,6 +135,32 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
                             .build();
                     scheduler.schedule(jobInfo);
 
+                } else {
+
+                    if (serviceName != null && !"".equals(serviceName)) {
+                        Class<?> callBackService = null;
+                        try {
+                            callBackService = Class.forName(serviceName);
+                        } catch (ClassNotFoundException e) {
+//					e.printStackTrace();
+                        }
+                        Intent intent = new Intent();
+                        Iterator i = m.keySet().iterator();
+                        while (i.hasNext()) {
+                            String key = (String) i.next();
+                            intent.putExtra(key, m.get(key));
+                        }
+                        intent.removeExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT);
+                        intent.putExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT,
+                                true);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.setClass(context, callBackService);
+
+                        Log.d(TAG, "just before call startService?.");
+                        startService(intent);
+                    }
+
+                }
             }
         }
 
