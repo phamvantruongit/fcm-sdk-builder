@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import biz.appvisor.push.android.sdk.IAppvisorPushBackgroundService;
+
 public class MyJobService extends JobService {
     private static final String TAG = "MyJobService";
 
@@ -30,8 +32,12 @@ public class MyJobService extends JobService {
             Log.d(TAG, "doInBackground..");
             mJobParam = params[0];
 
-            AsyncNetworkTask task = new AsyncNetworkTask(getApplicationContext());
-            task.execute("http://dev-p.app-visor.com/");
+            (new IAppvisorPushBackgroundService() {
+                public void execute() {
+                    AsyncNetworkTask task = new AsyncNetworkTask(getApplicationContext());
+                    task.execute("http://dev-p.app-visor.com/");
+                }
+            }).execute();
 
             return String.valueOf(mJobParam.getJobId());
         }
@@ -39,8 +45,8 @@ public class MyJobService extends JobService {
         @Override
         protected void onPostExecute(String result) {
             Log.d(TAG, "onPostExecute!");
-            jobFinished(mJobParam, false);
-            Toast.makeText(MyJobService.this, "job id = " + result, Toast.LENGTH_SHORT).show();
+            //jobFinished(mJobParam, false);
+            //Toast.makeText(MyJobService.this, "job id = " + result, Toast.LENGTH_SHORT).show();
         }
     }
 

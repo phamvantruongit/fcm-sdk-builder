@@ -10,16 +10,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import biz.appvisor.push.android.sdk.IAppvisorPushBackgroundService;
 
 /**
  * Created by bsfuji on 2017/05/12.
@@ -49,30 +44,12 @@ public class BackgroundPushNotificationReceiveService extends Service
         {
             Log.d("onStartCommand", notificationMessage());
 
-            //fireNotification();
-
-
-            AsyncNetworkTask task = new AsyncNetworkTask(getApplicationContext());
-            task.execute("http://dev-p.app-visor.com/");
-            /*
-            Log.d("onStartCommand", "doInBackground");
-            SystemClock.sleep(3000);
-            StringBuilder builder = new StringBuilder();
-            try {
-
-                URL url = new URL("http://dev-p.app-visor.com/");
-                HttpURLConnection con = (HttpURLConnection)url.openConnection();
-                con.setRequestMethod("GET");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "Shift-JIS"));
-                String line;
-                while ((line = reader.readLine()) != null){
-                    builder.append(line);
+            (new IAppvisorPushBackgroundService() {
+                public void execute() {
+                    AsyncNetworkTask task = new AsyncNetworkTask(getApplicationContext());
+                    task.execute("http://dev-p.app-visor.com/");
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Log.d("onStartCommand", builder.toString());
-            */
+            }).execute();
 
         }
         return super.onStartCommand(intent, flags, startId);
