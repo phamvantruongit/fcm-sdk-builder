@@ -2,7 +2,7 @@ package biz.appvisor.push.android.sdk;
 
 public class AppVisorPushSetting 
 {
-	static final int thisApiLevel = AppVisorPushUtil.getApiLevel();
+	public static final int thisApiLevel = AppVisorPushUtil.getApiLevel();
 	public static boolean allowLogOutput = false; 
 	public final static String APPVISOR_PUSH_LOG_TAG		       = "Appvisor_Push_SDK"; 
 	public final static String APPVISOR_PUSH_SDK_VERSION           = "2.3.1";
