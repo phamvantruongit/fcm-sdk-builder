@@ -155,7 +155,8 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         Iterator i = m.keySet().iterator();
         while (i.hasNext()) {
             String key = (String) i.next();
-            intent.putExtra(key, m.get(key));
+            String value = m.get(key);
+            intent.putExtra(key, value);
         }
         intent.putExtra(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT, true);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
