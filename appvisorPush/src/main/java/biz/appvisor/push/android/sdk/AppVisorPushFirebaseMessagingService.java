@@ -156,7 +156,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
 
     @TargetApi(26)
     private void startJobService(Context context, Map<String, String> m) {
-        Class<?> callBackService = MyJobService.class;
+        Class<?> callBackService = AppvisorPushJobService.class;
 
         PersistableBundle bundle = new PersistableBundle();
         Iterator i = m.keySet().iterator();

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-public class MyJobService extends JobService {
+public class AppvisorPushJobService extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters params) {
@@ -19,7 +19,7 @@ public class MyJobService extends JobService {
         HashMap<String, String> map = new HashMap<String, String>();
         while (ite.hasNext()) {
             String key = ite.next();
-//            Log.d("MyJobService", key + ": " + bundle.getString(key));
+//            Log.d("AppvisorPushJobService", key + ": " + bundle.getString(key));
             map.put(key, bundle.getString(key));
         }
 
