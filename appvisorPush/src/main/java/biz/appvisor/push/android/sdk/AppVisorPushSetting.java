@@ -5,7 +5,7 @@ public class AppVisorPushSetting
 	public static final int thisApiLevel = AppVisorPushUtil.getApiLevel();
 	public static boolean allowLogOutput = false; 
 	public final static String APPVISOR_PUSH_LOG_TAG		       = "Appvisor_Push_SDK"; 
-	public final static String APPVISOR_PUSH_SDK_VERSION           = "2.3.1";
+	public final static String APPVISOR_PUSH_SDK_VERSION           = "2.3.2";
 	//asahi "a.1.0.0";
 	public final static String APPVISOR_PUSH_SDK_CUSTOMIZE_VERSION = "";
 	public final static String OS_TYPE						       = "Android";
