@@ -6,9 +6,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 
 import biz.appvisor.push.android.sdk.AppVisorPush;
-import biz.appvisor.push.android.sdk.AppVisorPushSetting;
-import biz.appvisor.push.android.sdk.BackgroundPushNotificationReceiveService;
-import biz.appvisor.push.android.sdk.MyJobService;
 
 public class MainActivity extends ActionBarActivity
 {
@@ -43,7 +40,7 @@ public class MainActivity extends ActionBarActivity
             this.appVisorPush.setJobService(MyJobService.class.getName());
         }
 
-        this.appVisorPush.setService(BackgroundPushNotificationReceiveService.class.getName());
+        this.appVisorPush.setService(AppvisorPushBackgroundService.class.getName());
         */
 
         this.appVisorPush.setService(BackgroundService.class.getName());

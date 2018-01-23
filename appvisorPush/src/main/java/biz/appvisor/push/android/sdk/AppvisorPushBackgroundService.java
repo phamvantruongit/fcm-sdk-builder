@@ -13,7 +13,7 @@ import java.util.HashMap;
  * Created by bsfuji on 2017/05/12.
  */
 
-public class BackgroundPushNotificationReceiveService extends Service
+public class AppvisorPushBackgroundService extends Service
 {
 
     @Nullable

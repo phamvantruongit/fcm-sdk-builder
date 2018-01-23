@@ -137,7 +137,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
     }
 
     private void startBackgroundService(Context context, Map<String, String> m) {
-        Class<?> callBackService = BackgroundPushNotificationReceiveService.class;
+        Class<?> callBackService = AppvisorPushBackgroundService.class;
 
         Intent intent = new Intent();
         Iterator i = m.keySet().iterator();
