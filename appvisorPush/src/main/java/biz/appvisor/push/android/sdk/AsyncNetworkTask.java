@@ -1,4 +1,4 @@
-package jp.co.bravesoft.my_gcm_example2;
+package biz.appvisor.push.android.sdk;
 
 import android.content.Context;
 import android.os.AsyncTask;

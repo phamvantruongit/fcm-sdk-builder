@@ -1,12 +1,10 @@
-package jp.co.bravesoft.my_gcm_example2;
+package biz.appvisor.push.android.sdk;
 
 import android.content.Context;
 import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Iterator;
-
-import biz.appvisor.push.android.sdk.IAppvisorPushBackgroundService;
 
 /**
  * Created by hirayamatakaaki on 2018/01/23.

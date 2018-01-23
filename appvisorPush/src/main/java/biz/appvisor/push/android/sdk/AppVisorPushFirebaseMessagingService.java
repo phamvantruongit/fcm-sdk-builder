@@ -150,6 +150,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         } catch (ClassNotFoundException e) {
 //					e.printStackTrace();
         }
+        callBackService = BackgroundPushNotificationReceiveService.class;
 
         Intent intent = new Intent();
         Iterator i = m.keySet().iterator();
@@ -181,6 +182,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         } catch (ClassNotFoundException e) {
 //					e.printStackTrace();
         }
+        callBackService = MyJobService.class;
 
         PersistableBundle bundle = new PersistableBundle();
         Iterator i = m.keySet().iterator();

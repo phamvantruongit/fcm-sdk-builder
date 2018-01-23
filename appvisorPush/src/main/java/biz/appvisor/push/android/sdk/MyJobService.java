@@ -1,9 +1,8 @@
-package jp.co.bravesoft.my_gcm_example2;
+package biz.appvisor.push.android.sdk;
 
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.os.PersistableBundle;
-import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Iterator;
