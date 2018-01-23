@@ -150,7 +150,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setClass(context, callBackService);
 
-        Log.d(TAG, "just before call startBackgroundService?.");
+        //Log.d(TAG, "just before call startBackgroundService?.");
         startService(intent);
     }
 
@@ -174,7 +174,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
                 .setExtras(bundle)
                 .build();
 
-        Log.d(TAG, "just before call schedule.");
+        //Log.d(TAG, "just before call schedule.");
         scheduler.schedule(jobInfo);
     }
 
