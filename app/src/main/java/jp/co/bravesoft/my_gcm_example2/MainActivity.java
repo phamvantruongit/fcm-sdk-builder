@@ -38,11 +38,15 @@ public class MainActivity extends ActionBarActivity
         this.appVisorPush.trackPushWithActivity(this);
 
         //if (1) { // APIレベルを判定
+        /*
         if (AppVisorPushSetting.thisApiLevel >= 26) {
             this.appVisorPush.setJobService(MyJobService.class.getName());
         }
 
         this.appVisorPush.setService(BackgroundPushNotificationReceiveService.class.getName());
+        */
+
+        this.appVisorPush.setService(BackgroundService.class.getName());
         //this.appVisorPush.setService(BackgroundService.class.getName());
     }
 

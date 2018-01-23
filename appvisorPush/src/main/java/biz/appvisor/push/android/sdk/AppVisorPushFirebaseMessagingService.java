@@ -178,7 +178,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         scheduler.schedule(jobInfo);
     }
 
-    public static Class<?> getCallbackClass(Context context) {
+    public static IAppvisorPushBackgroundService getCallbackService(Context context) {
         String serviceName = AppVisorPushUtil
                 .getPushCallbackServiceName(context);
 
@@ -192,7 +192,18 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         } catch (ClassNotFoundException e) {
 //					e.printStackTrace();
         }
-        return callBackService;
+
+        IAppvisorPushBackgroundService instance = null;
+        try {
+            instance = (IAppvisorPushBackgroundService)(callBackService.newInstance());
+        }
+        catch (IllegalAccessException e) {
+
+        }
+        catch (InstantiationException e) {
+
+        }
+        return instance;
     }
 
 }

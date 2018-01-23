@@ -2,6 +2,7 @@ package biz.appvisor.push.android.sdk;
 
 import android.app.job.JobParameters;
 import android.app.job.JobService;
+import android.content.Context;
 import android.os.PersistableBundle;
 
 import java.util.HashMap;
@@ -22,7 +23,9 @@ public class MyJobService extends JobService {
             map.put(key, bundle.getString(key));
         }
 
-        new BackgroundService().execute(getApplicationContext(), map);
+        Context context = getApplicationContext();
+        IAppvisorPushBackgroundService service = AppVisorPushFirebaseMessagingService.getCallbackService(context);
+        service.execute(context, map);
         return true;
     }
 

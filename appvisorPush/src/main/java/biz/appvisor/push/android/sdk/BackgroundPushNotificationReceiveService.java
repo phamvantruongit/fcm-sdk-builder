@@ -1,14 +1,13 @@
 package biz.appvisor.push.android.sdk;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import java.util.HashMap;
-
-import biz.appvisor.push.android.sdk.AppVisorPushSetting;
 
 /**
  * Created by bsfuji on 2017/05/12.
@@ -37,7 +36,9 @@ public class BackgroundPushNotificationReceiveService extends Service
             }
         }
 
-        new BackgroundService().execute(getApplicationContext(), map);
+        Context context = getApplicationContext();
+        IAppvisorPushBackgroundService service = AppVisorPushFirebaseMessagingService.getCallbackService(context);
+        service.execute(context, map);
 
         return super.onStartCommand(intent, flags, startId);
     }
