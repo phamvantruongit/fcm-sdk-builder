@@ -2,15 +2,13 @@ package jp.co.bravesoft.my_gcm_example2;
 
 //import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import biz.appvisor.push.android.sdk.AppVisorPush;
-import biz.appvisor.push.android.sdk.AppVisorPushFirebaseMessagingService;
 import biz.appvisor.push.android.sdk.AppVisorPushSetting;
-import biz.appvisor.push.android.sdk.AppVisorPushUtil;
+import biz.appvisor.push.android.sdk.BackgroundPushNotificationReceiveService;
+import biz.appvisor.push.android.sdk.MyJobService;
 
 public class MainActivity extends ActionBarActivity
 {
@@ -45,6 +43,7 @@ public class MainActivity extends ActionBarActivity
         }
 
         this.appVisorPush.setService(BackgroundPushNotificationReceiveService.class.getName());
+        //this.appVisorPush.setService(BackgroundService.class.getName());
     }
 
     //必須
