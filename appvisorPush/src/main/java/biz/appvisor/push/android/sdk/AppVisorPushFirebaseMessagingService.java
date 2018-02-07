@@ -49,6 +49,13 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         //Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         Map<String, String> m = remoteMessage.getData();
+        String appvisorPushFlag = m.get(AppVisorPushSetting.KEY_APPVISOR_PUSH_INTENT);
+        if (null == appvisorPushFlag || !appvisorPushFlag.equals("1")) {
+            AppVisorPushUtil
+                    .appVisorPushLog("ignore message which is not came from appvisor.");
+            return;
+        }
+
         /*
         // Check if message contains a data payload.
         if (m.size() > 0) {
