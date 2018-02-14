@@ -96,10 +96,15 @@ public class AppVisorPush
 
 	public void setAppInfor( Context context , String trackingKey )
 	{
-		setAppInfor( context , trackingKey , false );
+		setAppInfor( context , trackingKey , AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_NAME );
 	}
-	
-	public void setAppInfor( Context context , String trackingKey , boolean debuggable )
+
+	public void setAppInfor( Context context , String trackingKey , String channelName)
+	{
+		setAppInfor( context , trackingKey , channelName, false);
+	}
+
+	public void setAppInfor( Context context , String trackingKey , String channelName, boolean debuggable)
 	{
 		if (context == null)
         {
@@ -123,19 +128,19 @@ public class AppVisorPush
 
 
 		if (AppVisorPushSetting.thisApiLevel >= 26) {
-			this.setDefaultNotificationChannel();
+			this.setDefaultNotificationChannel(channelName);
 		}
 	}
 
 	@TargetApi(26)
-	public void setDefaultNotificationChannel() {
+	public void setDefaultNotificationChannel(String channelName) {
 
 		NotificationManager mNotificationManager =
 				(NotificationManager) this.appContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		NotificationChannel mChannel = new NotificationChannel(
 				AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_ID,
-				AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_NAME,
+				channelName,
 				AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_IMPORTANCE
 		);
 		mChannel.setDescription(AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_DESCRIPTION);
