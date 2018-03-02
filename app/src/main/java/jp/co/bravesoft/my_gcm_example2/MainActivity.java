@@ -38,16 +38,14 @@ public class MainActivity extends ActionBarActivity
         this.appVisorPush.setService(AppvisorPushBackgroundService.class.getName());
         */
 
+        setContentView(R.layout.activity_main);
         //this.appVisorPush.setService(BackgroundService.class.getName());
         initAppvisor();
     }
 
     private void initAppvisor()
     {
-        AppVisorPush appVisorPush;
-        setContentView(R.layout.activity_main);
-
-        appVisorPush = AppVisorPush.sharedInstance();
+        AppVisorPush appVisorPush = AppVisorPush.sharedInstance();
         String appID = "UK3vtZa06c";
         appVisorPush.setAppInfor(getApplicationContext(), appID);
 //通知関連の内容を設定します。(送信者ID,通知アイコン,ステータスバーアイコン,通知で起動するClass名、デフォルトの通知タイトル)
