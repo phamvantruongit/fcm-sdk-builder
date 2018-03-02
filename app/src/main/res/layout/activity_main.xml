@@ -12,7 +12,27 @@
     tools:context="jp.co.bravesoft.my_gcm_example2.MainActivity">
 
     <TextView
+        android:id="@+id/hello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"/>
+
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onStartClick"
+        android:layout_below="@+id/hello"
+        android:text="サービス開始" />
+
+
+    <Button
+        android:id="@+id/printValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onPrintClick"
+        android:layout_below="@+id/btnStart"
+        android:text="デバッグ" />
+
 </RelativeLayout>
