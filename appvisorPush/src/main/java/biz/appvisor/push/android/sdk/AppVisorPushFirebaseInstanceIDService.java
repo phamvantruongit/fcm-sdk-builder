@@ -43,12 +43,6 @@ public class AppVisorPushFirebaseInstanceIDService extends FirebaseInstanceIdSer
 //        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
 //        Log.d(TAG, "Refreshed token: " + refreshedToken);
 
-        /*
-        AppVisorPush appVisorPush = AppVisorPush.sharedInstance();
-        if (!appVisorPush.launchWithTokenIfYet(true)) {
-            appVisorPush.refreshTokenIfUpdated();
-        }
-        */
         Context context = getApplicationContext();
 
         final String appTrackingKey = AppVisorPushUtil.getAppTrackingKey(context);

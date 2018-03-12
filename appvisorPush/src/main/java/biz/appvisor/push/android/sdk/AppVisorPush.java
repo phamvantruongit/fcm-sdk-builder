@@ -1,22 +1,4 @@
 package biz.appvisor.push.android.sdk;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -31,10 +13,28 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class AppVisorPush 
 {
@@ -231,33 +231,6 @@ public class AppVisorPush
 		{
 			this.launchWithToken(isInService);
    	 	}
-	}
-
-	public void refreshTokenIfUpdated()
-	{
-		final String deviceToken = this.messagingInterface.getDeviceToken();
-		if (AppVisorPushUtil.getPushToken(this.appContext) != null &&
-                AppVisorPushUtil.getPushToken(this.appContext).equals(deviceToken)) {
-			return;
-		}
-
-		// シェアに保存して
-		AppVisorPushUtil.savePushToken(this.appContext, deviceToken);
-
-		// サーバに同期
-        pushSenderHandler.sendMessage( pushSenderHandler.obtainMessage( AppVisorPushSetting.msgRefreshPushToken ) );
-	}
-
-	public boolean launchWithTokenIfYet(boolean isInService)
-	{
-		if (this.launched)
-		{
-			return false;
-		}
-		this.launched = true;
-        launchWithToken(isInService);
-
-		return true;
 	}
 
 	private void launchWithToken(boolean isInService)
@@ -795,20 +768,6 @@ public class AppVisorPush
                 		}
                 		break;
                 	}
-					case AppVisorPushSetting.msgRefreshPushToken:
-					{
-						try
-						{
-							if( AppVisorPushUtil.getAppStatus( this.appContext ) != AppVisorPushSetting.APP_STATUS_KEY_KL)
-							{
-								refreshPushToken();
-							}
-						}
-						finally
-						{
-						}
-						break;
-					}
                 	default:
                 	{
                 		throw new RuntimeException("Unknow Message Exception.");
@@ -1211,59 +1170,6 @@ public class AppVisorPush
             }
         }
 
-		private boolean refreshPushToken()
-		{
-        	final DefaultHttpClient client = new DefaultHttpClient();
-            final HttpPost method = new HttpPost(AppVisorPushSetting.PUSH_PROPERTY_URL);
-            try
-            {
-            	String deviceUUID = AppVisorPushUtil.getDeviceUUID( this.appContext , this.appTrackingKey );
-            	List<NameValuePair> postParams = new ArrayList<NameValuePair>();
-
-            	postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_C , "user" ) );
-        		postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_A , "refreshToken" ) );
-        		postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_APP_TRACKING_KEY , this.appTrackingKey ) );
-        		postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_DEVICE_UUID, deviceUUID ) );
-				postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_DEVICE_TOKEN, AppVisorPushUtil.getPushToken( this.appContext ) ) );
-
-        		method.setEntity(new UrlEncodedFormEntity(postParams, "UTF-8"));
-                final HttpResponse response = client.execute(method);
-
-                final StatusLine statusLine = response.getStatusLine();
-                final int statusCode = statusLine.getStatusCode();
-
-                AppVisorPushUtil.appVisorPushLog( String.format("communication completely with status code: %d", Integer.valueOf(statusCode)) );
-
-                if (statusCode >= 500 && statusCode <= 599)
-                {
-                	AppVisorPushUtil.appVisorPushLog( "synchronize user properties failed. Error code:" + statusCode );
-                    return false;
-                }
-                else
-                {
-                	AppVisorPushUtil.appVisorPushLog( "synchronize user properties succeed.");
-                	return true;
-                }
-            }
-            catch (final UnsupportedEncodingException e)
-            {
-            	AppVisorPushUtil.appVisorPushWaring( "UnsupportedEncodingException" , e );
-            	return false;
-            }
-            catch (final ClientProtocolException e)
-            {
-            	AppVisorPushUtil.appVisorPushWaring( "ClientProtocolException" , e );
-            	return false;
-            }
-            catch (final IOException e)
-            {
-            	AppVisorPushUtil.appVisorPushWaring( "IOException" , e );
-            	return false;
-            }
-            finally
-            {
-            }
-		}
     }
 
 	interface MessagingInterface
