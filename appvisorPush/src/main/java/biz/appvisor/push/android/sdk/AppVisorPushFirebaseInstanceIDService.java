@@ -54,6 +54,7 @@ public class AppVisorPushFirebaseInstanceIDService extends FirebaseInstanceIdSer
         if( AppVisorPushUtil.getAppStatus( context ) == AppVisorPushSetting.APP_STATUS_KEY_KL)
         {
             AppVisorPushUtil.appVisorPushLog("AppStatus is KL, can't send appInfor to server.");
+            return;
         }
 
 //        sendToServer(true);
