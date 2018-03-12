@@ -59,6 +59,7 @@
         <service android:name=".SimpleService"
             android:process=":my_sub_process" />
 
+        <service android:name=".TokenDeletionService" />
     </application>
 
 </manifest>

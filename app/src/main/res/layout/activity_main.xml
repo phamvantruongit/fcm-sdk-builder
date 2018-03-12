@@ -26,13 +26,21 @@
         android:layout_below="@+id/hello"
         android:text="サービス開始" />
 
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onDeleteClick"
+        android:layout_below="@+id/btnStart"
+        android:text="delete token" />
+
 
     <Button
         android:id="@+id/printValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onPrintClick"
-        android:layout_below="@+id/btnStart"
+        android:layout_below="@+id/btnDelete"
         android:text="デバッグ" />
 
 </RelativeLayout>

@@ -23,17 +23,21 @@ public class SimpleService extends Service {
         Log.i(TAG, "onStartCommand");
         SharedObject.value = "hello";
 
-//        initAppvisor();
+        initAppvisor();
 
         return START_STICKY;
     }
 
     private void initAppvisor()
     {
+        //TAG = "SimpleService";
+        Log.d(TAG, "initAppvisor");
         FirebaseApp.initializeApp(getApplicationContext());
 
         AppVisorPush appVisorPush = AppVisorPush.sharedInstance();
-        String appID = "UK3vtZa06c";
+        //String appID = "UK3vtZa06c";
+        String appID = "0GbyFCPEhb";
+
         appVisorPush.setAppInfor(getApplicationContext(), appID);
 //通知関連の内容を設定します。(送信者ID,通知アイコン,ステータスバーアイコン,通知で起動するClass名、デフォルトの通知タイトル)
         //this.appVisorPush.startPush("407066157166", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));
@@ -41,7 +45,7 @@ public class SimpleService extends Service {
 //Push反応率チェック(必須)
 //        appVisorPush.trackPushWithActivity(this);
 
-        appVisorPush.setService(BackgroundService.class.getName());
+//        appVisorPush.setService(BackgroundService.class.getName());
     }
 
     @Override

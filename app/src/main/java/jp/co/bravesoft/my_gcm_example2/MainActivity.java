@@ -2,6 +2,7 @@ package jp.co.bravesoft.my_gcm_example2;
 
 //import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
+import android.os.Looper;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class MainActivity extends ActionBarActivity
         //String appID = "kJ6Tvz9dGc";
         //String appID = "McPEpLDQUb";
         //String appID = "emUrt7qtxc";
+        String appID = "0GbyFCPEhb";
 
 
         //if (1) { // APIレベルを判定
@@ -40,13 +42,16 @@ public class MainActivity extends ActionBarActivity
 
         setContentView(R.layout.activity_main);
         //this.appVisorPush.setService(BackgroundService.class.getName());
-        initAppvisor();
+//        initAppvisor();
+//        Intent i = new Intent(this, SimpleService.class);
+//        startService(i);
     }
 
     private void initAppvisor()
     {
         AppVisorPush appVisorPush = AppVisorPush.sharedInstance();
-        String appID = "UK3vtZa06c";
+        //String appID = "UK3vtZa06c";
+        String appID = "0GbyFCPEhb";
         appVisorPush.setAppInfor(getApplicationContext(), appID);
 //通知関連の内容を設定します。(送信者ID,通知アイコン,ステータスバーアイコン,通知で起動するClass名、デフォルトの通知タイトル)
         //this.appVisorPush.startPush("407066157166", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));
@@ -66,7 +71,16 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void onStartClick(View view) {
-        Intent i = new Intent(this, SimpleService.class);
+//        Intent i = new Intent(this, SimpleService.class);
+ //       startService(i);
+        /*
+        */
+    //    initAppvisor();
+        initAppvisor();
+    }
+    // onDeleteClick
+    public void onDeleteClick (View view) {
+        Intent i = new Intent(this, TokenDeletionService.class);
         startService(i);
     }
 
