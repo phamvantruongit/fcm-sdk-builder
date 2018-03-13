@@ -137,7 +137,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
     }
 
     private void startBackgroundService(Context context, Map<String, String> m) {
-        Class<?> callBackService = AppvisorPushBackgroundService.class;
+        Class<?> callBackService = AppVisorPushUtil.getPushCallbackServiceClass(context);
 
         Intent intent = new Intent();
         Iterator i = m.keySet().iterator();
@@ -156,7 +156,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
 
     @TargetApi(26)
     private void startJobService(Context context, Map<String, String> m) {
-        Class<?> callBackService = AppvisorPushJobService.class;
+        Class<?> callBackService = AppVisorPushUtil.getPushCallbackJobServiceClass(context);
 
         PersistableBundle bundle = new PersistableBundle();
         Iterator i = m.keySet().iterator();
@@ -176,34 +176,6 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
 
         //Log.d(TAG, "just before call schedule.");
         scheduler.schedule(jobInfo);
-    }
-
-    public static IAppvisorPushBackgroundService getCallbackService(Context context) {
-        String serviceName = AppVisorPushUtil
-                .getPushCallbackServiceName(context);
-
-        if (serviceName == null || "".equals(serviceName)) {
-            return null;
-        }
-
-        Class<?> callBackService = null;
-        try {
-            callBackService = Class.forName(serviceName);
-        } catch (ClassNotFoundException e) {
-//					e.printStackTrace();
-        }
-
-        IAppvisorPushBackgroundService instance = null;
-        try {
-            instance = (IAppvisorPushBackgroundService)(callBackService.newInstance());
-        }
-        catch (IllegalAccessException e) {
-
-        }
-        catch (InstantiationException e) {
-
-        }
-        return instance;
     }
 
 }

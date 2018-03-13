@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import biz.appvisor.push.android.sdk.AppVisorPushSetting;
-import biz.appvisor.push.android.sdk.IAppvisorPushBackgroundService;
 
 /**
  * Created by hirayamatakaaki on 2018/01/23.

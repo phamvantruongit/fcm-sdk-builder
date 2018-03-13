@@ -404,7 +404,33 @@ public class AppVisorPushUtil
     	
     	return className;
     }
-    
+
+    static Class<?> getPushCallbackServiceClass(Context context)
+    {
+        return getClass(getPushCallbackServiceName(context));
+    }
+
+    static Class<?> getPushCallbackJobServiceClass(Context context)
+    {
+        return getClass(getPushCallbackJobServiceName(context));
+    }
+
+    static Class<?> getClass(String className)
+    {
+        if (className == null || "".equals(className)) {
+            return null;
+        }
+
+        Class<?> clazz = null;
+        try {
+            clazz = Class.forName(className);
+        } catch (ClassNotFoundException e) {
+//					e.printStackTrace();
+        }
+        return clazz;
+    }
+
+
     //save Push Callback Class Name
     static void savePushCallbackClassName(Context context, String className)
     {
@@ -414,7 +440,6 @@ public class AppVisorPushUtil
     	editor.commit();
     }
 
-    /*
     //load Push Callback Service Name
     static String getPushCallbackJobServiceName(Context context)
     {
@@ -433,10 +458,9 @@ public class AppVisorPushUtil
         editor.putString( AppVisorPushSetting.SHARED_PREFERENCES_PARA_JOB_SERVICE_NAME, serviceName);
         editor.commit();
     }
-    */
 
     //load Push Callback Service Name
-    static String getPushCallbackServiceName(Context context)
+    public static String getPushCallbackServiceName(Context context)
     {
     	String serviceName = "";
     	SharedPreferences prefer = context.getSharedPreferences(AppVisorPushSetting.SHARED_PREFERENCES_KEY ,Context.MODE_PRIVATE); 

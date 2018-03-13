@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="biz.appvisor.push.android.sdk.AppvisorPushBackgroundService" />
+        <service android:name=".AppvisorPushBackgroundService" />
 
         <activity
             android:name="biz.appvisor.push.android.sdk.RichPushDialogActivity"
@@ -52,7 +52,7 @@
         <!-- [END firebase_iid_service] -->
 
         <service
-            android:name="biz.appvisor.push.android.sdk.AppvisorPushJobService"
+            android:name=".AppvisorPushJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="true" />
 

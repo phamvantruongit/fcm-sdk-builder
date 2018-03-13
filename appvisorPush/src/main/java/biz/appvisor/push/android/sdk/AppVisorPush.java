@@ -79,17 +79,16 @@ public class AppVisorPush
 		setService(this.appContext, serviceName);
 	}
 
-	/*
 	public void setJobService(Context context ,String serviceNmae)
 	{
 		AppVisorPushUtil.savePushCallbackJobServiceName(context, serviceNmae);
 	}
+
 	public void setJobService(String serviceNmae)
 	{
 		setJobService(this.appContext, serviceNmae);
 	}
-	*/
-	
+
 	public void setAppInfor( Context context , String trackingKey )
 	{
 		setAppInfor( context , trackingKey , false );

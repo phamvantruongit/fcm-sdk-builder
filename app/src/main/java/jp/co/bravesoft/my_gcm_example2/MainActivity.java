@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import biz.appvisor.push.android.sdk.AppVisorPush;
+import biz.appvisor.push.android.sdk.AppVisorPushSetting;
 
 public class MainActivity extends ActionBarActivity
 {
@@ -59,7 +60,10 @@ public class MainActivity extends ActionBarActivity
 //Push反応率チェック(必須)
         appVisorPush.trackPushWithActivity(this);
 
-        appVisorPush.setService(BackgroundService.class.getName());
+        appVisorPush.setService(AppvisorPushBackgroundService.class.getName());
+        if (AppVisorPushSetting.thisApiLevel >= 26) {
+            appVisorPush.setJobService(AppvisorPushJobService.class.getName());
+        }
     }
 
     //必須
