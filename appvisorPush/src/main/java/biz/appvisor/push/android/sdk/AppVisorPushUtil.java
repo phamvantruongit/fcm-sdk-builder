@@ -414,6 +414,7 @@ public class AppVisorPushUtil
     	editor.commit();
     }
 
+    /*
     //load Push Callback Service Name
     static String getPushCallbackJobServiceName(Context context)
     {
@@ -432,6 +433,7 @@ public class AppVisorPushUtil
         editor.putString( AppVisorPushSetting.SHARED_PREFERENCES_PARA_JOB_SERVICE_NAME, serviceName);
         editor.commit();
     }
+    */
 
     //load Push Callback Service Name
     static String getPushCallbackServiceName(Context context)

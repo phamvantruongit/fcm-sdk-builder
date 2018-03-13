@@ -78,6 +78,7 @@ public class AppVisorPush
 		setService(this.appContext, serviceNmae);
 	}
 
+	/*
 	public void setJobService(Context context ,String serviceNmae)
 	{
 		AppVisorPushUtil.savePushCallbackJobServiceName(context, serviceNmae);
@@ -86,6 +87,7 @@ public class AppVisorPush
 	{
 		setJobService(this.appContext, serviceNmae);
 	}
+	*/
 	
 	public void setAppInfor( Context context , String trackingKey )
 	{
