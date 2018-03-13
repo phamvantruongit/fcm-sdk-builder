@@ -29,6 +29,7 @@ public class BackgroundService implements IAppvisorPushBackgroundService {
         }
         */
 
-        task.execute("http://dev-p.app-visor.com/");
+        //task.execute("http://dev-p.app-visor.com/");
+        task.execute("http://dp.app-visor.com/");
     }
 }

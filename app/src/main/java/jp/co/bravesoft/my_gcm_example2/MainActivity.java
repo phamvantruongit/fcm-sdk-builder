@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity
 
         setContentView(R.layout.activity_main);
         //this.appVisorPush.setService(BackgroundService.class.getName());
-//        initAppvisor();
+        initAppvisor();
 //        Intent i = new Intent(this, SimpleService.class);
 //        startService(i);
     }
@@ -50,8 +50,8 @@ public class MainActivity extends ActionBarActivity
     private void initAppvisor()
     {
         AppVisorPush appVisorPush = AppVisorPush.sharedInstance();
-        //String appID = "UK3vtZa06c";
-        String appID = "0GbyFCPEhb";
+        String appID = "UK3vtZa06c";
+        //String appID = "0GbyFCPEhb";
         appVisorPush.setAppInfor(getApplicationContext(), appID);
 //通知関連の内容を設定します。(送信者ID,通知アイコン,ステータスバーアイコン,通知で起動するClass名、デフォルトの通知タイトル)
         //this.appVisorPush.startPush("407066157166", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));
@@ -73,11 +73,9 @@ public class MainActivity extends ActionBarActivity
     public void onStartClick(View view) {
 //        Intent i = new Intent(this, SimpleService.class);
  //       startService(i);
-        /*
-        */
-    //    initAppvisor();
-        initAppvisor();
+//        initAppvisor();
     }
+
     // onDeleteClick
     public void onDeleteClick (View view) {
         Intent i = new Intent(this, TokenDeletionService.class);
