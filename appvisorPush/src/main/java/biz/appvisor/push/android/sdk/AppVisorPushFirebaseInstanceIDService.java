@@ -40,7 +40,6 @@ public class AppVisorPushFirebaseInstanceIDService extends FirebaseInstanceIdSer
     @Override
     public void onTokenRefresh() {
         // Get updated InstanceID token.
-//        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
 //        Log.d(TAG, "Refreshed token: " + refreshedToken);
 
         Context context = getApplicationContext();
@@ -57,11 +56,9 @@ public class AppVisorPushFirebaseInstanceIDService extends FirebaseInstanceIdSer
             return;
         }
 
-//        sendToServer(true);
         AppVisorPushUtil.appVisorPushLog( "already had device token:" + deviceToken );
         AppVisorPushUtil.savePushToken(context, deviceToken);
         //send user info only when token EXISTS
-        //AppVisorPush.startSendDeviceInfor(context, isInService);
         refreshPushToken(context, appTrackingKey);
 
         // If you want to send messages to this application instance or
