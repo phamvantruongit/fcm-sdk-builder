@@ -69,13 +69,14 @@ public class AppVisorPush
 		return _appvisorPushInstance;
 	}
 	
-	public void setService(Context context ,String serviceNmae)
+	public void setService(Context context ,String serviceName)
 	{
-		AppVisorPushUtil.savePushCallbackServiceName(context, serviceNmae);
+		AppVisorPushUtil.savePushCallbackServiceName(context, serviceName);
 	}
-	public void setService(String serviceNmae)
+
+	public void setService(String serviceName)
 	{
-		setService(this.appContext, serviceNmae);
+		setService(this.appContext, serviceName);
 	}
 
 	/*
