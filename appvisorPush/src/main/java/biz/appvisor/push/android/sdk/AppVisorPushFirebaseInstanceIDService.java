@@ -1,7 +1,6 @@
 package biz.appvisor.push.android.sdk;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
@@ -19,9 +18,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import biz.appvisor.push.android.sdk.AppVisorPush;
-import biz.appvisor.push.android.sdk.AppVisorPushUtil;
 
 /**
  * Created by hirayamatakaaki on 2017/03/29.
@@ -58,8 +54,14 @@ public class AppVisorPushFirebaseInstanceIDService extends FirebaseInstanceIdSer
 
         AppVisorPushUtil.appVisorPushLog( "already had device token:" + deviceToken );
         AppVisorPushUtil.savePushToken(context, deviceToken);
-        //send user info only when token EXISTS
-        refreshPushToken(context, appTrackingKey);
+
+        if (AppVisorPushUtil.getRegistrationState(context) == AppVisorPushSetting.REGISTRATION_STATE_INACTIVE) {
+            refreshPushToken(context, appTrackingKey);
+        }
+        else {
+            AppVisorPushRegisterer.sendToServer(context, appTrackingKey, false);
+            AppVisorPushUtil.saveRegistrationState(context, AppVisorPushSetting.REGISTRATION_STATE_INACTIVE);
+        }
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the

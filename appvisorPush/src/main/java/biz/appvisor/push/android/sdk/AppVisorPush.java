@@ -113,7 +113,7 @@ public class AppVisorPush
         
         this.appContext 	= !(context.getClass().getName().equals("android.test.RenamingDelegatingContext")) && AppVisorPushSetting.thisApiLevel >= 8 ? context.getApplicationContext() : context;
 //		this.messagingInterface = new GoogleMessagingInterface(this.appContext);
-		this.messagingInterface = new FirebaseMessagingInterface();
+		this.messagingInterface = new FirebaseMessagingInterface(this.appContext);
 
         this.appTrackingKey = trackingKey;
         
@@ -1063,6 +1063,13 @@ public class AppVisorPush
 
 	static class FirebaseMessagingInterface implements MessagingInterface
 	{
+		Context context;
+
+		FirebaseMessagingInterface (Context context)
+		{
+			this.context = context;
+		}
+
 		public boolean isRegistered()
 		{
 			return FirebaseInstanceId.getInstance().getToken() != null;
@@ -1085,6 +1092,7 @@ public class AppVisorPush
 
 		public void register( String senderID )
 		{
+			AppVisorPushUtil.saveRegistrationState(this.context, AppVisorPushSetting.REGISTRATION_STATE_ACTIVE);
 		}
 
 	}

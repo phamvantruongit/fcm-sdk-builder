@@ -787,8 +787,24 @@ public class AppVisorPushUtil
     	
     	return editor.commit();
     }
-    
-    //md5 encoding 
+
+    static boolean saveRegistrationState(Context context, int state)
+    {
+        SharedPreferences prefer = context.getSharedPreferences(AppVisorPushSetting.SHARED_PREFERENCES_KEY ,Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = prefer.edit();
+        editor.putInt(AppVisorPushSetting.SHARED_PREFERENCES_PARA_REGISTRATION_STATE, state);
+
+        return editor.commit();
+    }
+
+    static int getRegistrationState(Context context)
+    {
+        SharedPreferences prefer = context.getSharedPreferences(AppVisorPushSetting.SHARED_PREFERENCES_KEY ,Context.MODE_PRIVATE);
+        return prefer.getInt(AppVisorPushSetting.SHARED_PREFERENCES_PARA_REGISTRATION_STATE, AppVisorPushSetting.REGISTRATION_STATE_INACTIVE);
+    }
+
+    //md5 encoding
     static String md5(String s) 
     {
         try 

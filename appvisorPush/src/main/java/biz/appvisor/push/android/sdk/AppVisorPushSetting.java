@@ -37,7 +37,8 @@ public class AppVisorPushSetting
 	public final static String SHARED_PREFERENCES_PARA_PROPERTY			 = "appvisorproperty";
 	public final static String SHARED_PREFERENCES_PARA_STATUSBAR_ICON_ID = "statusbar_icon_id";
 	public final static String SHARED_PREFERENCES_PARA_ARRIVED_TIMES	 = "arrived_times";
-	
+    public final static String SHARED_PREFERENCES_PARA_REGISTRATION_STATE	 = "registration_state";
+
 	public final static String PROPERTY_DELIMITER      = "{[s]}";
 	public final static String PROPERTY_DELIMITER_GREP = "\\{\\[s\\]\\}";
 	public final static String PROPERTY_DEFAULT_VALUE  = "appvisorpush_default_value";
@@ -110,4 +111,7 @@ public class AppVisorPushSetting
     public final static String DEFAULT_NOTIFICATION_CHANNEL_DESCRIPTION = "Default notification channel";
     public final static int DEFAULT_NOTIFICATION_CHANNEL_IMPORTANCE = 4;
     public final static long[] DEFAULT_NOTIFICATION_CHANNEL_VIBRATION_PATTERN = new long[]{100, 200, 300, 400, 500, 400, 300, 200, 500};
+
+    public final static int REGISTRATION_STATE_ACTIVE	 = 1;
+    public final static int REGISTRATION_STATE_INACTIVE	 = 0;
 }
