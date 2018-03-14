@@ -60,9 +60,11 @@ public class MainActivity extends ActionBarActivity
 //Push反応率チェック(必須)
         appVisorPush.trackPushWithActivity(this);
 
-        appVisorPush.setService(AppvisorPushBackgroundService.class.getName());
-        if (AppVisorPushSetting.thisApiLevel >= 26) {
+        if (AppVisorPush.requiresJobService()) {
             appVisorPush.setJobService(AppvisorPushJobService.class.getName());
+        }
+        else {
+            appVisorPush.setService(AppvisorPushBackgroundService.class.getName());
         }
     }
 

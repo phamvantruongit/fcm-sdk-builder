@@ -89,6 +89,11 @@ public class AppVisorPush
 		setJobService(this.appContext, serviceNmae);
 	}
 
+	public static boolean requiresJobService()
+	{
+		return  AppVisorPushSetting.thisApiLevel >= 26;
+	}
+
 	public void setAppInfor( Context context , String trackingKey )
 	{
 		setAppInfor( context , trackingKey , false );
