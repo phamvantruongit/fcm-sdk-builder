@@ -10,6 +10,7 @@ import android.view.View;
 
 import biz.appvisor.push.android.sdk.AppVisorPush;
 import biz.appvisor.push.android.sdk.AppVisorPushSetting;
+import biz.appvisor.push.android.sdk.AppVisorPushUtil;
 
 public class MainActivity extends ActionBarActivity
 {
@@ -29,7 +30,8 @@ public class MainActivity extends ActionBarActivity
         //String appID = "kJ6Tvz9dGc";
         //String appID = "McPEpLDQUb";
         //String appID = "emUrt7qtxc";
-        String appID = "0GbyFCPEhb";
+        //String appID = "0GbyFCPEhb";
+        String appID = "UK3vtZa06c";
 
 
         //if (1) { // APIレベルを判定
@@ -61,6 +63,7 @@ public class MainActivity extends ActionBarActivity
         appVisorPush.trackPushWithActivity(this);
 
         if (AppVisorPush.requiresJobService()) {
+
             appVisorPush.setJobService(AppvisorPushJobService.class.getName());
         }
         else {
