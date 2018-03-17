@@ -1,9 +1,9 @@
 package jp.co.bravesoft.my_gcm_example2;
 
-//import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Looper;
-import android.support.v7.app.ActionBarActivity;
+//import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +12,8 @@ import biz.appvisor.push.android.sdk.AppVisorPush;
 import biz.appvisor.push.android.sdk.AppVisorPushSetting;
 import biz.appvisor.push.android.sdk.AppVisorPushUtil;
 
-public class MainActivity extends ActionBarActivity
+//public class MainActivity extends ActionBarActivity
+public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = "MainActivity";
 
