@@ -1015,7 +1015,7 @@ public class AppVisorPush
 		boolean requiresRegistration();
 		void register(String senderID);
 	}
-
+/*
 	static class GoogleMessagingInterface implements MessagingInterface
 	{
 		Context context;
@@ -1060,6 +1060,7 @@ public class AppVisorPush
 			GCMRegistrar.register( this.context, senderID );
 		}
 	}
+	*/
 
 	static class FirebaseMessagingInterface implements MessagingInterface
 	{

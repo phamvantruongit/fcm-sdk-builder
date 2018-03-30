@@ -56,23 +56,21 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
             return;
         }
 
-        /*
-        // Check if message contains a data payload.
-        if (m.size() > 0) {
-            Log.d(TAG, "Message data payload: " + m);
-            // Check if data needs to be processed by long running job
-            if ( true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-//                scheduleJob();
-            } else {
-                // Handle message within 10 seconds
-                handleNow();
-            }
-        }
-        for (Map.Entry<String, String> entry : m.entrySet()) {
-            System.out.println("key ->" + entry.getKey() + ", value->" + entry.getValue());
-        }
-        */
+//        // Check if message contains a data payload.
+//        if (m.size() > 0) {
+//            Log.d(TAG, "Message data payload: " + m);
+//            // Check if data needs to be processed by long running job
+//            if ( true) {
+//                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
+////                scheduleJob();
+//            } else {
+//                // Handle message within 10 seconds
+//                handleNow();
+//            }
+//        }
+//        for (Map.Entry<String, String> entry : m.entrySet()) {
+//            System.out.println("key ->" + entry.getKey() + ", value->" + entry.getValue());
+//        }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
@@ -113,7 +111,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         }
 
         if (urlFlag != null) {
-            AppVisorPushIntentService.showUrlNotification(
+            AppvisorPushNotification.showUrlNotification(
                     title,
                     message,
                     context,
@@ -131,7 +129,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
 //					e.printStackTrace();
             }
 
-            AppVisorPushIntentService.showNotification(
+            AppvisorPushNotification.showNotification(
                     title,
                     message,
                     context,
