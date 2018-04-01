@@ -60,6 +60,11 @@
             android:process=":my_sub_process" />
 
         <service android:name=".TokenDeletionService" />
+
+        <service
+            android:name="biz.appvisor.push.android.sdk.NotificationStartService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

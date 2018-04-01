@@ -231,6 +231,7 @@ public class AppvisorPushNotification {
             pushID = 0;
         }
         //notiManager.notify(pushID, notif);
+        notiManager.notify(pushID, notif);
 
         AppVisorPushUtil.appVisorPushLog("show Url Notification end");
 
