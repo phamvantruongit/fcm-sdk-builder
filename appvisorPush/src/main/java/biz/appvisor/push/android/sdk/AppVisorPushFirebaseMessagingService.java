@@ -23,7 +23,6 @@ import java.util.Map;
 public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingService
 {
 
-    private static final String TAG = "AppVisorFCMService";
     /**
      * Called when message is received.
      *
