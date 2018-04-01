@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         AppVisorPush appVisorPush = AppVisorPush.sharedInstance();
         String appID = "UK3vtZa06c";
         //String appID = "0GbyFCPEhb";
-        appVisorPush.setAppInfor(getApplicationContext(), appID);
+        appVisorPush.setAppInfor(getApplicationContext(), appID, AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_NAME, true);
 //通知関連の内容を設定します。(送信者ID,通知アイコン,ステータスバーアイコン,通知で起動するClass名、デフォルトの通知タイトル)
         //this.appVisorPush.startPush("407066157166", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));
         appVisorPush.startPush("890273406421", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));

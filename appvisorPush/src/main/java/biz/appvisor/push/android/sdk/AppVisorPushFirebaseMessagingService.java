@@ -8,7 +8,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PersistableBundle;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -33,7 +32,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
     // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "onMessageReceived");
+        AppVisorPushUtil.appVisorPushLog("onMessageReceived");
         // [START_EXCLUDE]
         // There are two types of messages data messages and notification messages. Data messages are handled
         // here in onMessageReceived whether the app is in the foreground or background. Data messages are the type
@@ -74,7 +73,8 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            AppVisorPushUtil.appVisorPushLog(
+                    "Message Notification Body: " + remoteMessage.getNotification());
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
@@ -155,7 +155,6 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setClass(context, callBackService);
 
-        //Log.d(TAG, "just before call startBackgroundService?.");
         startService(intent);
     }
 
@@ -179,7 +178,6 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
                 .setExtras(bundle)
                 .build();
 
-        //Log.d(TAG, "just before call schedule.");
         scheduler.schedule(jobInfo);
     }
 

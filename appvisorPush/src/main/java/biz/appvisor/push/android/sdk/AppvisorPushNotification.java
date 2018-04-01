@@ -10,16 +10,13 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import java.util.HashMap;
 
 public class AppvisorPushNotification {
-    private static final String TAG = "AppvisorPushNotif";
     protected static void showNotification(String title, String message,
                                            Context context, Class<?> cls, String pushIDStr,
                                            HashMap<String, String> hashMap, boolean vibrationOnOff, NotificationManager notiManager) {
-        Log.d(TAG, "onMessageReceived_330");
         AppVisorPushUtil.appVisorPushLog("show Normal Notification start");
 
         int pushIconResourceId = AppVisorPushUtil.getPushIconID(context);
@@ -70,7 +67,6 @@ public class AppvisorPushNotification {
                 pushIconResourceId);
 
         Notification notif = new Notification();
-    Log.d(TAG, "onMessageReceived_331");
 
         if (AppVisorPushSetting.thisApiLevel < 16) {
             // OS Version in Android 3.0 ‾ 4.1
@@ -110,7 +106,6 @@ public class AppvisorPushNotification {
 
         notif.flags = Notification.FLAG_AUTO_CANCEL;
 
-        Log.d(TAG, "onMessageReceived_332");
         int pushID = 0;
         try {
             pushID = Integer.parseInt(pushIDStr);
@@ -118,12 +113,9 @@ public class AppvisorPushNotification {
             AppVisorPushUtil.appVisorPushWaring("NumberFormatException", e);
             pushID = 0;
         }
-        Log.d(TAG, "onMessageReceived_333: " + new Integer(pushID).toString());
         notiManager.notify(pushID, notif);
-    /*
 
         AppVisorPushUtil.appVisorPushLog("show Normal Notification Finished");
-        */
     }
 
     protected static void showUrlNotification(String title, String message,
@@ -230,12 +222,9 @@ public class AppvisorPushNotification {
             AppVisorPushUtil.appVisorPushWaring("NumberFormatException", e);
             pushID = 0;
         }
-        //notiManager.notify(pushID, notif);
         notiManager.notify(pushID, notif);
 
         AppVisorPushUtil.appVisorPushLog("show Url Notification end");
-
-        Log.d(TAG, "done");
     }
 
     @TargetApi(26)
