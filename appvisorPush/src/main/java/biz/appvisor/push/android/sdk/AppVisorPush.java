@@ -86,20 +86,25 @@ public class AppVisorPush
 
 	public static boolean requiresJobService()
 	{
-		return  AppVisorPushSetting.thisApiLevel >= 26;
+		return higherOrEqualsToOreo();
+	}
+
+	private static boolean requiresNotificationChannel()
+	{
+		return higherOrEqualsToOreo();
+	}
+
+	private static boolean higherOrEqualsToOreo()
+	{
+		return AppVisorPushSetting.thisApiLevel >= 26;
 	}
 
 	public void setAppInfor( Context context , String trackingKey )
 	{
-		setAppInfor( context , trackingKey , AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_NAME );
+		setAppInfor( context , trackingKey , false );
 	}
 
-	public void setAppInfor( Context context , String trackingKey , String channelName)
-	{
-		setAppInfor( context , trackingKey , channelName, false);
-	}
-
-	public void setAppInfor( Context context , String trackingKey , String channelName, boolean debuggable)
+	public void setAppInfor( Context context, String trackingKey, boolean debuggable)
 	{
 		if (context == null)
         {
@@ -120,25 +125,25 @@ public class AppVisorPush
         AppVisorPushUtil.saveAppTrackingKey( this.appContext , this.appTrackingKey );
         
         AppVisorPushSetting.allowLogOutput = debuggable;
-
-
-		if (AppVisorPushSetting.thisApiLevel >= 26) {
-			this.setDefaultNotificationChannel(channelName);
-		}
 	}
 
 	@TargetApi(26)
-	public void setDefaultNotificationChannel(String channelName) {
+	public void setNotificationChannel(String name, String description)
+	{
+		if (!requiresNotificationChannel())
+		{
+			return;
+		}
 
 		NotificationManager mNotificationManager =
 				(NotificationManager) this.appContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		NotificationChannel mChannel = new NotificationChannel(
 				AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_ID,
-				channelName,
+				name,
 				AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_IMPORTANCE
 		);
-		mChannel.setDescription(AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_DESCRIPTION);
+		mChannel.setDescription(description);
 		mChannel.enableVibration(true);
 		mChannel.setVibrationPattern(AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_VIBRATION_PATTERN);
 
