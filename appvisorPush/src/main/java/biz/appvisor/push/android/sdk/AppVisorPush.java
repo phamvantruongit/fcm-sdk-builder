@@ -13,7 +13,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.google.android.gcm.GCMRegistrar;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.apache.http.HttpResponse;
