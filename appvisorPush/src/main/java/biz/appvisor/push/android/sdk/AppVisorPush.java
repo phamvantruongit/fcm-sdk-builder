@@ -432,7 +432,7 @@ public class AppVisorPush
     	pushSenderHandler.sendMessage( pushSenderHandler.obtainMessage(AppVisorPushSetting.msgDoSynchronizeUserProperties) );
     }
     
-    public void changePushRecieveStatus(boolean onOff)
+    public void changePushReceiveStatus(boolean onOff)
     {
 		if (null == this.appContext)
 		{
