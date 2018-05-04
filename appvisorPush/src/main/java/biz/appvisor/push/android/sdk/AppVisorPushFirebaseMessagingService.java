@@ -97,6 +97,9 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         String urlFlag = m.get(AppVisorPushSetting.KEY_PUSH_URL);
         Context context = getApplicationContext();
 
+        String contentFlag = m.get(AppVisorPushSetting.KEY_PUSH_CONTENT_FLAG);
+        String contentUrl = m.get(AppVisorPushSetting.KEY_PUSH_CONTENT_URL);
+
         if ("1".equals(m.get(AppVisorPushSetting.KEY_BACKGROUND_NOTIFICATION))) {
             if (AppVisorPushSetting.thisApiLevel < 26) {
                 startBackgroundService(context, m);
@@ -106,6 +109,18 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         }
 
         if ("1".equals(m.get(AppVisorPushSetting.KEY_SILENCE_NOTIFICATION))) {
+            return;
+        }
+
+        String clsName = AppVisorPushUtil
+                .getPushCallbackClassName(context);
+
+        if (AppVisorPushSetting.thisApiLevel >= 16 && contentFlag != null) {
+            // OS Version after Android 4.1 && Rich Push
+            //startService();
+            AppvisorPushNotification.showRichNotification(title, message, context,
+                    clsName, pushIdStr, hashMap, false, contentFlag, contentUrl, urlFlag, this);
+
             return;
         }
 
@@ -119,8 +134,6 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
                     (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE));
         } else {
             // Normal Mode
-            String clsName = AppVisorPushUtil
-                    .getPushCallbackClassName(context);
             Class<?> callBackClass = null;
             try {
                 callBackClass = Class.forName(clsName);

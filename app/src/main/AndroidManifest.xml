@@ -29,11 +29,6 @@
 
         <service android:name=".AppvisorPushBackgroundService" />
 
-        <activity
-            android:name="biz.appvisor.push.android.sdk.RichPushDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
-
         <!-- [START firebase_service] -->
         <service
             android:name="biz.appvisor.push.android.sdk.AppVisorPushFirebaseMessagingService">
@@ -65,6 +60,17 @@
             android:name="biz.appvisor.push.android.sdk.NotificationStartService"
             android:exported="false" >
         </service>
+
+        <service
+            android:name="biz.appvisor.push.android.sdk.RichPushIntentService"
+            android:exported="false" >
+        </service>
+
+        <activity
+            android:name="biz.appvisor.push.android.sdk.RichPushDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
     </application>
 
 </manifest>

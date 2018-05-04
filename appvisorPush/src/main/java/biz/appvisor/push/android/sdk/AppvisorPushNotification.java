@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -242,4 +243,20 @@ public class AppvisorPushNotification {
                 .setContentIntent(contentIntent)
                 .build();
     }
+
+    protected static void showRichNotification(String title, String message,
+                                        final Context context, String className, String pushIDStr,
+                                        HashMap<String, String> hashMap, boolean vibrationOnOff,
+                                        String contentFlg, String contentURL, String urlFlag, ContextWrapper contextWrapper) {
+
+        AppVisorPushUtil.appVisorPushLog("show Rich Notification start");
+
+        final RichPush richPush = new RichPush(title, message, className, pushIDStr,
+                hashMap, vibrationOnOff, contentFlg, contentURL, urlFlag);
+
+        Intent intent = new Intent(context, RichPushIntentService.class);
+        intent.putExtra("richPush", richPush);
+        contextWrapper.startService(intent);
+    }
+
 }

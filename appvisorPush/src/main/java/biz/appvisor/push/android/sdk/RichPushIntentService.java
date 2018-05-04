@@ -128,7 +128,7 @@ public class RichPushIntentService extends IntentService implements AsyncTaskCal
 	
 	private NotificationCompat.Builder commonNotificationBuilder()
 	{
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_ID);
 		builder.setSmallIcon(AppVisorPushUtil.getPushIconID(this.applicationContext));
 		builder.setContentTitle(this.notificationTitle());
 		builder.setContentText(this.notificationMessage());
