@@ -142,6 +142,9 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
 
     private void startBackgroundService(Context context, Map<String, String> m) {
         Class<?> callBackService = AppVisorPushUtil.getPushCallbackServiceClass(context);
+        if (callBackService == null) {
+            return;
+        }
 
         Intent intent = new Intent();
         Iterator i = m.keySet().iterator();
@@ -160,6 +163,9 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
     @TargetApi(26)
     private void startJobService(Context context, Map<String, String> m) {
         Class<?> callBackService = AppVisorPushUtil.getPushCallbackJobServiceClass(context);
+        if (callBackService == null) {
+            return;
+        }
 
         PersistableBundle bundle = new PersistableBundle();
         Iterator i = m.keySet().iterator();
