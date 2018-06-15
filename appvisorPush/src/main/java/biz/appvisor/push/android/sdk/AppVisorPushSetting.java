@@ -7,14 +7,14 @@ public class AppVisorPushSetting
 	public static final int thisApiLevel = AppVisorPushUtil.getApiLevel();
 	public static boolean allowLogOutput = false; 
 	public final static String APPVISOR_PUSH_LOG_TAG		       = "Appvisor_Push_SDK"; 
-	public final static String APPVISOR_PUSH_SDK_VERSION           = "3.0.0";
+	public final static String APPVISOR_PUSH_SDK_VERSION           = "3.0.0.a";
 	//asahi "a.1.0.0";
 	public final static String APPVISOR_PUSH_SDK_CUSTOMIZE_VERSION = "";
 	public final static String OS_TYPE						       = "Android";
 	
 	//API URL
-	public final static String LIVE_BASE_URL	 = "http://p.app-visor.com/";	
-	public final static String DEV_BASE_URL		 = "http://dp.app-visor.com/";
+	public final static String LIVE_BASE_URL	 = "https://p.app-visor.com/";
+	public final static String DEV_BASE_URL		 = "https://dp.app-visor.com/";
 	public final static String REAL_URL          = BuildConfig.DEBUG ? DEV_BASE_URL : LIVE_BASE_URL;
     public final static String PUSH_INFOR_URL 	 = REAL_URL;
     public final static String PUSH_FEEDBACK_URL = REAL_URL;
