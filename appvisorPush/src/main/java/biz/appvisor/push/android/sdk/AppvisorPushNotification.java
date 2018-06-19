@@ -288,6 +288,7 @@ public class AppvisorPushNotification {
                 .setSmallIcon(statusbarIconResourceId)
                 .setLargeIcon(largeIconImage)
                 .setContentIntent(contentIntent)
+                .setStyle(new Notification.BigTextStyle().bigText(message))
                 .build();
     }
 
