@@ -13,8 +13,8 @@ public class AppVisorPushSetting
 	public final static String OS_TYPE						       = "Android";
 	
 	//API URL
-	public final static String LIVE_BASE_URL	 = "http://p.app-visor.com/";	
-	public final static String DEV_BASE_URL		 = "http://dp.app-visor.com/";
+	public final static String LIVE_BASE_URL	 = "https://p.app-visor.com/";
+	public final static String DEV_BASE_URL		 = "https://dp.app-visor.com/";
 	public final static String REAL_URL          = BuildConfig.DEBUG ? DEV_BASE_URL : LIVE_BASE_URL;
     public final static String PUSH_INFOR_URL 	 = REAL_URL;
     public final static String PUSH_FEEDBACK_URL = REAL_URL;
