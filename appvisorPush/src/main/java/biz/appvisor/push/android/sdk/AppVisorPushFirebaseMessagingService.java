@@ -159,6 +159,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
     private void startBackgroundService(Context context, Map<String, String> m) {
         Class<?> callBackService = AppVisorPushUtil.getPushCallbackServiceClass(context);
         if (callBackService == null) {
+            AppVisorPushUtil.appVisorPushLog("callBackService is empty to launch background service.");
             return;
         }
 
@@ -180,6 +181,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
     private void startJobService(Context context, Map<String, String> m) {
         Class<?> callBackService = AppVisorPushUtil.getPushCallbackJobServiceClass(context);
         if (callBackService == null) {
+            AppVisorPushUtil.appVisorPushLog("callBackService is empty to launch job service.");
             return;
         }
 
