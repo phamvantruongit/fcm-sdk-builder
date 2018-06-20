@@ -100,6 +100,9 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
         String contentFlag = m.get(AppVisorPushSetting.KEY_PUSH_CONTENT_FLAG);
         String contentUrl = m.get(AppVisorPushSetting.KEY_PUSH_CONTENT_URL);
 
+        boolean vibrationOnOff = m.containsKey(AppVisorPushSetting.KEY_PUSH_VIBRATION) &&
+            m.get(AppVisorPushSetting.KEY_PUSH_VIBRATION).equals("1");
+
         if ("1".equals(m.get(AppVisorPushSetting.KEY_BACKGROUND_NOTIFICATION))) {
             if (AppVisorPushSetting.thisApiLevel < 26) {
                 startBackgroundService(context, m);
@@ -119,7 +122,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
             // OS Version after Android 4.1 && Rich Push
             //startService();
             AppvisorPushNotification.showRichNotification(title, message, context,
-                    clsName, pushIdStr, hashMap, false, contentFlag, contentUrl, urlFlag, this);
+                    clsName, pushIdStr, hashMap, vibrationOnOff, contentFlag, contentUrl, urlFlag, this);
 
             return;
         }
@@ -130,7 +133,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
                     message,
                     context,
                     pushIdStr,
-                    false,
+                    vibrationOnOff,
                     (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE));
         } else {
             // Normal Mode
@@ -148,7 +151,7 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
                     callBackClass,
                     pushIdStr,
                     hashMap,
-                    false,
+                    vibrationOnOff,
                     (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE));
         }
     }

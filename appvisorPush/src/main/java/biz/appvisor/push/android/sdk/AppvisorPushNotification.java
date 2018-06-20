@@ -7,6 +7,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -105,6 +107,13 @@ public class AppvisorPushNotification {
             );
         }
 
+        if (AppVisorPushSetting.thisApiLevel < 26) {
+            notif.defaults |= Notification.DEFAULT_SOUND;
+            if (checkIsVibrateEnable(context) && vibrationOnOff) {
+                notif.defaults |= Notification.DEFAULT_VIBRATE;
+            }
+        }
+
         notif.flags = Notification.FLAG_AUTO_CANCEL;
 
         int pushID = 0;
@@ -117,6 +126,37 @@ public class AppvisorPushNotification {
         notiManager.notify(pushID, notif);
 
         AppVisorPushUtil.appVisorPushLog("show Normal Notification Finished");
+    }
+
+    private static boolean checkIsVibrateEnable(Context context) {
+        boolean result = false;
+        ApplicationInfo appInfo = context.getApplicationInfo();
+        String appPackageName = appInfo.packageName;
+        String permissonName = "android.permission.VIBRATE";
+
+        AppVisorPushUtil
+                .appVisorPushLog("check vibrate permission for packageName: "
+                        + appPackageName);
+
+        int permissonValue = context.getPackageManager().checkPermission(
+                permissonName, appPackageName);
+
+        if (permissonValue == PackageManager.PERMISSION_GRANTED) {
+            result = true;
+
+            AppVisorPushUtil
+                    .appVisorPushLog("vibrate PERMISSION_GRANTED for packageName: "
+                            + appPackageName);
+
+        } else {
+            result = false;
+
+            AppVisorPushUtil
+                    .appVisorPushLog("vibrate PERMISSION_DENIED for packageName: "
+                            + appPackageName);
+        }
+
+        return result;
     }
 
     protected static void showUrlNotification(String title, String message,
@@ -214,6 +254,13 @@ public class AppvisorPushNotification {
             );
         }
 
+        if (AppVisorPushSetting.thisApiLevel < 26) {
+            notif.defaults |= Notification.DEFAULT_SOUND;
+            if (checkIsVibrateEnable(context) && vibrationOnOff) {
+                notif.defaults |= Notification.DEFAULT_VIBRATE;
+            }
+        }
+
         notif.flags = Notification.FLAG_AUTO_CANCEL;
 
         int pushID = 0;
@@ -241,6 +288,7 @@ public class AppvisorPushNotification {
                 .setSmallIcon(statusbarIconResourceId)
                 .setLargeIcon(largeIconImage)
                 .setContentIntent(contentIntent)
+                .setStyle(new Notification.BigTextStyle().bigText(message))
                 .build();
     }
 
