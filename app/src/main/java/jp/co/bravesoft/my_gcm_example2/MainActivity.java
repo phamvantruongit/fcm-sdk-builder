@@ -78,13 +78,20 @@ public class MainActivity extends AppCompatActivity
 //            appVisorPush.setService("AppvisorPushBackgroundService");
         }
 
-        EditText editItems[] = {
+        EditText editItems1[] = {
                 (EditText)(findViewById(R.id.editText1)),
                 (EditText)(findViewById(R.id.editText2)),
                 (EditText)(findViewById(R.id.editText3))
         };
-        Button button = ((Button)findViewById(R.id.button1));
-        setupSpecialProperties(appVisorPush, editItems, button, AppVisorPush.SpecialUserPropertyGroup1);
+        setupSpecialProperties(appVisorPush, editItems1, ((Button)findViewById(R.id.button1)), AppVisorPush.SpecialUserPropertyGroup1);
+
+        EditText editItems2[] = {
+                (EditText)(findViewById(R.id.editText4)),
+                (EditText)(findViewById(R.id.editText5)),
+                (EditText)(findViewById(R.id.editText6))
+        };
+        setupSpecialProperties(appVisorPush, editItems2, ((Button)findViewById(R.id.button2)), AppVisorPush.SpecialUserPropertyGroup2);
+
     }
 
 
@@ -113,6 +120,7 @@ public class MainActivity extends AppCompatActivity
                     boolean saved = appvisorPush.setUserPropertyWithGroup(params, specialPropertyGroup);
                     if (saved == true) {
                         Log.d("MainActivity", "succeeded to save params");
+                        appvisorPush.synchronizeUserProperties();
                     }
                 }
             }

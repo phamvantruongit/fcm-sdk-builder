@@ -38,6 +38,7 @@ public class AppVisorPush
     public final static int UserPropertyGroup4        = 4;
     public final static int UserPropertyGroup5        = 5;
     public final static int SpecialUserPropertyGroup1 = 101;
+	public final static int SpecialUserPropertyGroup2 = 102;
 
 	static AppVisorPush 	_appvisorPushInstance;
 	
@@ -358,8 +359,17 @@ public class AppVisorPush
     	{
     		throw new IllegalArgumentException("appTrackingKey is empty.");
     	}
-    	
-    	if ( propertyGroup < AppVisorPush.UserPropertyGroup1 || ( propertyGroup > AppVisorPush.UserPropertyGroup5 && propertyGroup != AppVisorPush.SpecialUserPropertyGroup1 ) )
+
+		final Integer[] props = {
+            AppVisorPush.UserPropertyGroup1,
+            AppVisorPush.UserPropertyGroup2,
+            AppVisorPush.UserPropertyGroup3,
+            AppVisorPush.UserPropertyGroup4,
+            AppVisorPush.UserPropertyGroup5,
+            AppVisorPush.SpecialUserPropertyGroup1,
+            AppVisorPush.SpecialUserPropertyGroup2};
+
+		if (!Arrays.asList(props).contains(propertyGroup))
         {
     		AppVisorPushUtil.appVisorPushLog("avoid UserPropertyGroup :" + propertyGroup + " .");
     		return result;
