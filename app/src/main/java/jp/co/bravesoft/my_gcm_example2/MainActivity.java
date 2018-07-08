@@ -7,6 +7,11 @@ import android.os.Looper;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import biz.appvisor.push.android.sdk.AppVisorPush;
 import biz.appvisor.push.android.sdk.AppVisorPushSetting;
@@ -70,7 +75,48 @@ public class MainActivity extends AppCompatActivity
         }
         else {
             appVisorPush.setService(AppvisorPushBackgroundService.class.getName());
+//            appVisorPush.setService("AppvisorPushBackgroundService");
         }
+
+        EditText editItems[] = {
+                (EditText)(findViewById(R.id.editText1)),
+                (EditText)(findViewById(R.id.editText2)),
+                (EditText)(findViewById(R.id.editText3))
+        };
+        Button button = ((Button)findViewById(R.id.button1));
+        setupSpecialProperties(appVisorPush, editItems, button, AppVisorPush.SpecialUserPropertyGroup1);
+    }
+
+
+    private void setupSpecialProperties(final AppVisorPush appvisorPush, final EditText editItems[], Button button, final int specialPropertyGroup) {
+       //appvisorPush.
+        List<String> subscribed = (List<String>)appvisorPush.getUserPropertyWithGroup(specialPropertyGroup);
+
+        for (int i = 0; i < subscribed.size(); i++) {
+            editItems[i].setText(subscribed.get(i));
+        }
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> params = new ArrayList<String>();
+
+                for (int i = 0; i < editItems.length; i++) {
+                    String param = editItems[i].getText().toString();
+                    if (!param.equals("")) {
+                        params.add(param);
+                    }
+                }
+
+                if (params.size() >= 1) {
+
+                    boolean saved = appvisorPush.setUserPropertyWithGroup(params, specialPropertyGroup);
+                    if (saved == true) {
+                        Log.d("MainActivity", "succeeded to save params");
+                    }
+                }
+            }
+        });
     }
 
     //必須
