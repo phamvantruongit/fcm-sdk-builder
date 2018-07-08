@@ -953,26 +953,32 @@ public class AppVisorPush
             			postParams.add(new BasicNameValuePair( propertyKey , propertyValue ));
         			}
         	    }
-            	
-            	List<String> specialPropertyList = (List<String>) AppVisorPush.sharedInstance().getUserPropertyWithGroup(this.appContext, AppVisorPush.SpecialUserPropertyGroup1);;
-            	int sizeOfList = specialPropertyList.size();
-            	
-            	if ( sizeOfList > 0 )
-            	{
-            		for (int i = 0; i < sizeOfList; i++) 
-                	{
-                		String propertyValue = specialPropertyList.get(i);
-                		String propertyKey = AppVisorPushSetting.PARAM_PROPERTY + AppVisorPush.SpecialUserPropertyGroup1 + "[]";
-                		postParams.add(new BasicNameValuePair( propertyKey , propertyValue ));
-                	}
-            	}
-            	else
-            	{
-            		String propertyValue = "";
-            		String propertyKey = AppVisorPushSetting.PARAM_PROPERTY + AppVisorPush.SpecialUserPropertyGroup1 + "[]";
-            		postParams.add(new BasicNameValuePair( propertyKey , propertyValue ));
-            	}
-            	
+
+        	    int specialProperties[] = {AppVisorPush.SpecialUserPropertyGroup1, AppVisorPush.SpecialUserPropertyGroup2};
+
+				for (int i = 0; i < specialProperties.length; i++)
+				{
+					int specialProperty = specialProperties[i];
+					List<String> specialPropertyList = (List<String>) AppVisorPush.sharedInstance().getUserPropertyWithGroup(this.appContext, specialProperty);
+					int sizeOfList = specialPropertyList.size();
+
+					if ( sizeOfList > 0 )
+					{
+						for (int j = 0; j < sizeOfList; j++)
+						{
+							String propertyValue = specialPropertyList.get(j);
+							String propertyKey = AppVisorPushSetting.PARAM_PROPERTY + specialProperty + "[]";
+							postParams.add(new BasicNameValuePair( propertyKey , propertyValue ));
+						}
+					}
+					else
+					{
+						String propertyValue = "";
+						String propertyKey = AppVisorPushSetting.PARAM_PROPERTY + specialProperty + "[]";
+						postParams.add(new BasicNameValuePair( propertyKey , propertyValue ));
+					}
+				}
+
             	
             	postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_C , "user" ) );
         		postParams.add(new BasicNameValuePair( AppVisorPushSetting.PARAM_A , "property" ) );
