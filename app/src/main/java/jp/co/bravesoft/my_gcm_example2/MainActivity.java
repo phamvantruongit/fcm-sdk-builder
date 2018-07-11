@@ -32,12 +32,16 @@ public class MainActivity extends AppCompatActivity
 
         //sdk初期化(必須)
 //AppVisorPush用のAPPIDを設定します。
-        //String appID = "uIxoJSuq6b";
         //String appID = "kJ6Tvz9dGc";
         //String appID = "McPEpLDQUb";
-        //String appID = "emUrt7qtxc";
+        String appID = "emUrt7qtxc";
         //String appID = "0GbyFCPEhb";
-        String appID = "UK3vtZa06c";
+
+        //String appID = "UK3vtZa06c";
+        //String appID = "uIxoJSuq6b";
+        //String appID = "M2RF4vBbmb";
+
+        //String appID = "McPEpLDQUb";
 
 
         //if (1) { // APIレベルを判定
@@ -59,24 +63,70 @@ public class MainActivity extends AppCompatActivity
     private void initAppvisor()
     {
         AppVisorPush appVisorPush = AppVisorPush.sharedInstance();
-        String appID = "UK3vtZa06c";
+        //String appID = "UK3vtZa06c";
+        //String appID = "McPEpLDQUb";
+        //String appID = "uIxoJSuq6b";
+        //String appID = "M2RF4vBbmb";
+        //String appID = "WRw2QSwLTb";
+        //String appID = "ck0k2X2mrb";
+        //String appID = "uIxoJSuq6b";
+
+        //String appID = "U26L9Adwbd";
+        //String appID = "emUrt7qtxc";
+        //String appID = "2AbBjrsZSc";
+        //String appID = "IySdXJepnb";
+
         //String appID = "0GbyFCPEhb";
+        String appID = "6i8rRaSqMc";
+        //String appID = "0GbyFCPEhb";
+        //String appID = "gSUHf3ugnb";
+        //String appID = "Ea84v0OQbc";
+
+        //String appID = "McPEpLDQUb";
         appVisorPush.setAppInfor(getApplicationContext(), appID,true);
         appVisorPush.setNotificationChannel("channelName", "channelDesc");
+        //appVisorPush.setno
+        //appVisorPush.setNotificationChannel("hoge", "hello world");
+
 //通知関連の内容を設定します。(送信者ID,通知アイコン,ステータスバーアイコン,通知で起動するClass名、デフォルトの通知タイトル)
         //this.appVisorPush.startPush("407066157166", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));
-        appVisorPush.startPush("890273406421", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));
+        //appVisorPush.startPush("890273406421", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));
+
+        appVisorPush.startPush("890273406421", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, "マイタイトル");
+        //appVisorPush.startPush("71332990448", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, "マイタイトル");
+        //appVisorPush.startPush("750834641974", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, "マイタイトル");
 //Push反応率チェック(必須)
         appVisorPush.trackPushWithActivity(this);
 
+        //ActivityがAppVisorPushで起動かどうかの判断(Option)
+        Log.d(TAG, "before checkIfStartByAppVisorPush");
+        if (appVisorPush.checkIfStartByAppVisorPush(this))
+        {
+            Log.d(TAG, "after checkIfStartByAppVisorPush");
+//例：Push内のメーセージ内容をAlertで表示させる。
+            Bundle bundle = appVisorPush.getBundleFromAppVisorPush(this);
+            String message = bundle.getString("message");
+            String xString = bundle.getString("x");
+            String yString = bundle.getString("y");
+            String zString = bundle.getString("z");
+            String wString = bundle.getString("w");
+            Log.d(TAG, "get from bundle -> message: " + message + " x: " + xString +
+                " y: " + yString +
+                " z: " + zString +
+                " w: " + wString
+            );
+        }
+        /*
         if (AppVisorPush.requiresJobService()) {
 
             appVisorPush.setJobService(AppvisorPushJobService.class.getName());
+//            appVisorPush.setJobService("AppvisorPushJobService");
         }
         else {
             appVisorPush.setService(AppvisorPushBackgroundService.class.getName());
 //            appVisorPush.setService("AppvisorPushBackgroundService");
         }
+        */
 
         EditText editItems1[] = {
                 (EditText)(findViewById(R.id.editText1)),
@@ -120,7 +170,7 @@ public class MainActivity extends AppCompatActivity
                     boolean saved = appvisorPush.setUserPropertyWithGroup(params, specialPropertyGroup);
                     if (saved == true) {
                         Log.d("MainActivity", "succeeded to save params");
-                        appvisorPush.synchronizeUserProperties();
+                        //appvisorPush.synchronizeUserProperties();
                     }
                 }
             }
