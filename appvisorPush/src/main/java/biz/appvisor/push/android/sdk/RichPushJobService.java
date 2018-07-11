@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.os.PersistableBundle;
-import android.util.Log;
 
 import java.util.HashMap;
 
