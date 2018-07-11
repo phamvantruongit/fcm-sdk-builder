@@ -3,9 +3,8 @@ package biz.appvisor.push.android.sdk;
 import android.annotation.TargetApi;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
-import android.content.Context;
-import android.content.Intent;
 import android.os.PersistableBundle;
+import android.util.Log;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -13,20 +12,21 @@ import java.util.Set;
 @TargetApi(26)
 public class RichPushJobService extends JobService {
 
+    private static final String TAG = "RichPushJobService";
+
     @TargetApi(26)
     @Override
     public boolean onStartJob(JobParameters params) {
+        Log.d(TAG, "onStartJob");
+
         PersistableBundle bundle = params.getExtras();
         Set<String> keys = bundle.keySet();
         Iterator<String> ite = keys.iterator();
 
-        Intent intent = new Intent();
         while (ite.hasNext()) {
             String key = ite.next();
-            intent.putExtra(key, bundle.getString(key));
+            Log.d(TAG, key + " " + bundle.getString(key));
         }
-
-        Context context = getApplicationContext();
         return true;
     }
 

@@ -4,6 +4,9 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -12,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.PersistableBundle;
 import android.support.v4.app.NotificationCompat;
 
 import java.util.HashMap;
@@ -307,6 +311,7 @@ public class AppvisorPushNotification {
         contextWrapper.startService(intent);
     }
 
+    @TargetApi(26)
     protected static void showRichNotificationWithJobService(String title, String message,
                                         final Context context, String className, String pushIDStr,
                                         HashMap<String, String> hashMap, boolean vibrationOnOff,
@@ -314,12 +319,26 @@ public class AppvisorPushNotification {
 
         AppVisorPushUtil.appVisorPushLog("show Rich Notification with job service start");
 
-        final RichPush richPush = new RichPush(title, message, className, pushIDStr,
-                hashMap, vibrationOnOff, contentFlg, contentURL, urlFlag);
+        PersistableBundle bundle = new PersistableBundle();
+        bundle.putString("title", title);
+        bundle.putString("message", message);
+        bundle.putString("className", className);
+        bundle.putString("pushIDStr", pushIDStr);
+        //bundle.putBoolean("vibrationOnOff", vibrationOnOff);
+        bundle.putString("contentFlg", contentFlg);
+        bundle.putString("contentURL", contentURL);
+        bundle.putString("urlFlag", urlFlag);
 
-        Intent intent = new Intent(context, RichPushIntentService.class);
-        intent.putExtra("richPush", richPush);
-        contextWrapper.startService(intent);
+        ComponentName mServiceName = new ComponentName(context, RichPushJobService.class);
+        JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        JobInfo jobInfo = new JobInfo.Builder(0, mServiceName)
+                .setMinimumLatency(1000)
+                .setOverrideDeadline(10000)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setExtras(bundle)
+                .build();
+
+        scheduler.schedule(jobInfo);
     }
 
 }
