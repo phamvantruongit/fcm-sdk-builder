@@ -16,7 +16,7 @@ public class RichPushIntentService extends IntentService
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		RichPushProcess process =
-            new RichPushBackgroundProcess(
+            new RichPushProcess(
             	this.getApplicationContext(),
             	(RichPush)intent.getSerializableExtra("richPush"),
             	this);

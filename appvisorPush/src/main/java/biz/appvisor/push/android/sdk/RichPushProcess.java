@@ -4,6 +4,7 @@ import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -13,20 +14,28 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 
-public abstract class RichPushProcess implements CommonAsyncTack.AsyncTaskCallback {
+public class RichPushProcess implements CommonAsyncTack.AsyncTaskCallback {
 
     private Context             applicationContext  = null;
     protected NotificationManager notificationManager = null;
     private RichPush            richPush            = null;
 
-    protected void setup(Context applicationContext, RichPush richPush)
-    {
+    private Service service;
+
+    RichPushProcess(Context applicationContext, RichPush richPush, Service service) {
+        this.service = service;
         this.applicationContext = applicationContext;
         this.richPush = richPush;
+        this.notificationManager = (NotificationManager)getContextWrapper().getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    protected abstract ContextWrapper getContextWrapper();
-    protected abstract void stopSelf();
+    private ContextWrapper getContextWrapper() {
+        return this.service;
+    }
+
+    private void stopSelf() {
+        this.service.stopSelf();
+    }
 
     public void mainProcess()
     {

@@ -36,11 +36,10 @@ public class RichPushJobService extends JobService {
         final RichPush richPush = new RichPush(title, message, className, pushIDStr,
                 hashMap, vibrationOnOff, contentFlg, contentURL, urlFlag);
 
-        RichPushProcess process =
-                new RichPushJobServiceProcess(
-                        this.getApplicationContext(),
-                        richPush,
-                        this);
+        RichPushProcess process = new RichPushProcess(
+            this.getApplicationContext(),
+            richPush,
+            this);
         process.mainProcess();
         return true;
     }
