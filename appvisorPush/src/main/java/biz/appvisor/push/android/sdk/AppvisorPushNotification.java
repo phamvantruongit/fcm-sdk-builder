@@ -293,11 +293,26 @@ public class AppvisorPushNotification {
     }
 
     protected static void showRichNotification(String title, String message,
+                                               final Context context, String className, String pushIDStr,
+                                               HashMap<String, String> hashMap, boolean vibrationOnOff,
+                                               String contentFlg, String contentURL, String urlFlag, ContextWrapper contextWrapper) {
+
+        AppVisorPushUtil.appVisorPushLog("show Rich Notification start");
+
+        final RichPush richPush = new RichPush(title, message, className, pushIDStr,
+                hashMap, vibrationOnOff, contentFlg, contentURL, urlFlag);
+
+        Intent intent = new Intent(context, RichPushIntentService.class);
+        intent.putExtra("richPush", richPush);
+        contextWrapper.startService(intent);
+    }
+
+    protected static void showRichNotificationWithJobService(String title, String message,
                                         final Context context, String className, String pushIDStr,
                                         HashMap<String, String> hashMap, boolean vibrationOnOff,
                                         String contentFlg, String contentURL, String urlFlag, ContextWrapper contextWrapper) {
 
-        AppVisorPushUtil.appVisorPushLog("show Rich Notification start");
+        AppVisorPushUtil.appVisorPushLog("show Rich Notification with job service start");
 
         final RichPush richPush = new RichPush(title, message, className, pushIDStr,
                 hashMap, vibrationOnOff, contentFlg, contentURL, urlFlag);

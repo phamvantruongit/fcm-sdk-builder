@@ -120,10 +120,16 @@ public class AppVisorPushFirebaseMessagingService extends FirebaseMessagingServi
 
         if (AppVisorPushSetting.thisApiLevel >= 16 && contentFlag != null) {
             // OS Version after Android 4.1 && Rich Push
-            //startService();
-            AppvisorPushNotification.showRichNotification(title, message, context,
-                    clsName, pushIdStr, hashMap, vibrationOnOff, contentFlag, contentUrl, urlFlag, this);
 
+            if (AppVisorPushSetting.thisApiLevel < 26) {
+                AppvisorPushNotification.showRichNotification(title, message, context,
+                        clsName, pushIdStr, hashMap, vibrationOnOff, contentFlag, contentUrl, urlFlag, this);
+
+            }
+            else  {
+                AppvisorPushNotification.showRichNotificationWithJobService(title, message, context,
+                        clsName, pushIdStr, hashMap, vibrationOnOff, contentFlag, contentUrl, urlFlag, this);
+            }
             return;
         }
 
