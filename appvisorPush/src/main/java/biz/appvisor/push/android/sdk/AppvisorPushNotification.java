@@ -329,6 +329,11 @@ public class AppvisorPushNotification {
         bundle.putString("contentURL", contentURL);
         bundle.putString("urlFlag", urlFlag);
 
+        bundle.putString("params_w", hashMap.get("w"));
+        bundle.putString("params_x", hashMap.get("x"));
+        bundle.putString("params_y", hashMap.get("y"));
+        bundle.putString("params_z", hashMap.get("z"));
+
         ComponentName mServiceName = new ComponentName(context, RichPushJobService.class);
         JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         JobInfo jobInfo = new JobInfo.Builder(0, mServiceName)

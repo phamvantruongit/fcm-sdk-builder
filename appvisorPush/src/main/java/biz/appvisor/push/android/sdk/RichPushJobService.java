@@ -28,6 +28,10 @@ public class RichPushJobService extends JobService {
         String urlFlag = bundle.getString("urlFlag");
 
         HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("w", bundle.getString("params_w"));
+        hashMap.put("x", bundle.getString("params_x"));
+        hashMap.put("y", bundle.getString("params_y"));
+        hashMap.put("z", bundle.getString("params_z"));
 
         final RichPush richPush = new RichPush(title, message, className, pushIDStr,
                 hashMap, vibrationOnOff, contentFlg, contentURL, urlFlag);
