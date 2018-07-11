@@ -6,8 +6,7 @@ import android.app.job.JobService;
 import android.os.PersistableBundle;
 import android.util.Log;
 
-import java.util.Iterator;
-import java.util.Set;
+import java.util.HashMap;
 
 @TargetApi(26)
 public class RichPushJobService extends JobService {
@@ -17,16 +16,28 @@ public class RichPushJobService extends JobService {
     @TargetApi(26)
     @Override
     public boolean onStartJob(JobParameters params) {
-        Log.d(TAG, "onStartJob");
-
         PersistableBundle bundle = params.getExtras();
-        Set<String> keys = bundle.keySet();
-        Iterator<String> ite = keys.iterator();
 
-        while (ite.hasNext()) {
-            String key = ite.next();
-            Log.d(TAG, key + " " + bundle.getString(key));
-        }
+        String title = bundle.getString("title");
+        String message = bundle.getString("message");
+        String className = bundle.getString("className");
+        String pushIDStr = bundle.getString("pushIDStr");
+        Boolean vibrationOnOff = bundle.getBoolean("vibrationOnOff");
+        String contentFlg = bundle.getString("contentFlg");
+        String contentURL = bundle.getString("contentURL");
+        String urlFlag = bundle.getString("urlFlag");
+
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+
+        final RichPush richPush = new RichPush(title, message, className, pushIDStr,
+                hashMap, vibrationOnOff, contentFlg, contentURL, urlFlag);
+
+        RichPushProcess process =
+                new RichPushJobServiceProcess(
+                        this.getApplicationContext(),
+                        richPush,
+                        this);
+        process.mainProcess();
         return true;
     }
 

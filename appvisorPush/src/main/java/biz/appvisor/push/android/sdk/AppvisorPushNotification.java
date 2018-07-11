@@ -324,7 +324,7 @@ public class AppvisorPushNotification {
         bundle.putString("message", message);
         bundle.putString("className", className);
         bundle.putString("pushIDStr", pushIDStr);
-        //bundle.putBoolean("vibrationOnOff", vibrationOnOff);
+        bundle.putBoolean("vibrationOnOff", vibrationOnOff);
         bundle.putString("contentFlg", contentFlg);
         bundle.putString("contentURL", contentURL);
         bundle.putString("urlFlag", urlFlag);
