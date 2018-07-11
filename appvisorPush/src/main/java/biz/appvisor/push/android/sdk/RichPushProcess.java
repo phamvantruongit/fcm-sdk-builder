@@ -2,8 +2,10 @@ package biz.appvisor.push.android.sdk;
 
 import android.app.KeyguardManager;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,8 +14,23 @@ import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 
 public abstract class RichPushProcess implements CommonAsyncTack.AsyncTaskCallback {
-    private void mainProcess()
+
+    private Context             applicationContext  = null;
+    protected NotificationManager notificationManager = null;
+    private RichPush            richPush            = null;
+
+    protected void setup(Context applicationContext, RichPush richPush)
     {
+        this.applicationContext = applicationContext;
+        this.richPush = richPush;
+    }
+
+    protected abstract ContextWrapper getContextWrapper();
+    protected abstract void stopSelf();
+
+    public void mainProcess()
+    {
+        //private NotificationManager notificationManager = null;
         if (this.richPush.isImagePush())
         {
             this.imagePushProcess();
@@ -30,7 +47,7 @@ public abstract class RichPushProcess implements CommonAsyncTack.AsyncTaskCallba
 
     private void loadImage()
     {
-        CommonAsyncTack task = new CommonAsyncTack(this.applicationContext, richPush, richPush.getContentURL(), RichPushIntentService.this);
+        CommonAsyncTack task = new CommonAsyncTack(this.applicationContext, richPush, richPush.getContentURL(), RichPushProcess.this);
         task.execute();
     }
 
@@ -64,13 +81,13 @@ public abstract class RichPushProcess implements CommonAsyncTack.AsyncTaskCallba
 
     private boolean isLockedScreen()
     {
-        KeyguardManager keyguard = (KeyguardManager)getSystemService(Context.KEYGUARD_SERVICE);
+        KeyguardManager keyguard = (KeyguardManager)this.getContextWrapper().getSystemService(Context.KEYGUARD_SERVICE);
         return keyguard.inKeyguardRestrictedInputMode();
     }
 
     private boolean isScreenOff()
     {
-        PowerManager powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
+        PowerManager powerManager = (PowerManager)this.getContextWrapper().getSystemService(Context.POWER_SERVICE);
         return (false == powerManager.isScreenOn());
     }
 
@@ -101,7 +118,7 @@ public abstract class RichPushProcess implements CommonAsyncTack.AsyncTaskCallba
 
     private NotificationCompat.Builder commonNotificationBuilder()
     {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_ID);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getContextWrapper().getApplicationContext(), AppVisorPushSetting.DEFAULT_NOTIFICATION_CHANNEL_ID);
         builder.setSmallIcon(AppVisorPushUtil.getPushIconID(this.applicationContext));
         builder.setContentTitle(this.notificationTitle());
         builder.setContentText(this.notificationMessage());
@@ -191,7 +208,7 @@ public abstract class RichPushProcess implements CommonAsyncTack.AsyncTaskCallba
 
     private Intent dialogIntent()
     {
-        Intent intent = new Intent(getApplicationContext(), RichPushDialogActivity.class);
+        Intent intent = new Intent(this.getContextWrapper().getApplicationContext(), RichPushDialogActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
@@ -255,12 +272,12 @@ public abstract class RichPushProcess implements CommonAsyncTack.AsyncTaskCallba
     {
         AppVisorPushUtil.RichPushImage.imageBitmap = image;
 
-        startActivity(this.dialogIntent());
+        this.getContextWrapper().startActivity(this.dialogIntent());
     }
 
     private void openWebDialog()
     {
-        startActivity(this.dialogIntent());
+        this.getContextWrapper().startActivity(this.dialogIntent());
     }
 
     private Bundle bundleData()
@@ -281,11 +298,6 @@ public abstract class RichPushProcess implements CommonAsyncTack.AsyncTaskCallba
                 AppVisorPushSetting.PARAM_DEVICE_UUID, AppVisorPushUtil.getDeviceUUID(this.applicationContext, appTrackingID),
                 AppVisorPushSetting.PARAM_PUSH_TRACKING_ID, this.richPush.getPushIDStr(),
                 AppVisorPushSetting.PARAM_ARRIVED_TIME, System.currentTimeMillis());
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     /**

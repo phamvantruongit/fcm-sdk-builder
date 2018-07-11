@@ -1,16 +1,10 @@
 package biz.appvisor.push.android.sdk;
 
 import android.app.IntentService;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 
 public class RichPushIntentService extends IntentService
 {
-	private Context             applicationContext  = null;
-	private NotificationManager notificationManager = null;
-	private RichPush            richPush            = null;
-	
 	public RichPushIntentService() {
 		super("RichPushIntentService");
 	}
@@ -21,11 +15,16 @@ public class RichPushIntentService extends IntentService
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		this.applicationContext  = this.getApplicationContext();
-		this.notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-		this.richPush            = (RichPush)intent.getSerializableExtra("richPush");
-
-		this.mainProcess();
+		RichPushProcess process =
+            new RichPushBackgroundProcess(
+            	this.getApplicationContext(),
+            	(RichPush)intent.getSerializableExtra("richPush"),
+            	this);
+		process.mainProcess();
 	}
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+	}
 }
