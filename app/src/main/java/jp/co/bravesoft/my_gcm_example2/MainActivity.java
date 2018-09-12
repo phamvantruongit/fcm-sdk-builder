@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         //this.appVisorPush.startPush("407066157166", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));
         //appVisorPush.startPush("890273406421", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, getString(R.string.app_name));
 
-        appVisorPush.startPush("890273406421", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, "マイタイトル");
+        appVisorPush.startPush("890273406421", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.drawable.errorstop , MainActivity.class, "マイタイトル");
         //appVisorPush.startPush("71332990448", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, "マイタイトル");
         //appVisorPush.startPush("750834641974", R.mipmap.ic_launcher, R.mipmap.ic_launcher, MainActivity.class, "マイタイトル");
 //Push反応率チェック(必須)

@@ -27,6 +27,7 @@ public class AppVisorPushSetting
 	public final static String SHARED_PREFERENCES_PARA_DEVICE_ID		 = "device_id";
 	public final static String SHARED_PREFERENCES_PARA_PUSH_TOKEN		 = "push_token";
 	public final static String SHARED_PREFERENCES_PARA_APP_STATUS		 = "app_status";
+    public final static String SHARED_PREFERENCES_PARA_APP_IMAGE_ERROR	 = "image_error";
 	public final static String SHARED_PREFERENCES_PARA_SENDER_ID		 = "push_sender_id";
 	public final static String SHARED_PREFERENCES_PARA_CLASS_NAME		 = "callback_class";
 	public final static String SHARED_PREFERENCES_PARA_SERVICE_NAME		 = "callback_service";

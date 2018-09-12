@@ -181,27 +181,27 @@ public class AppVisorPush
     	return onOff; 
     }
 	
-    public void startPushInService(String senderID,int pushIconID,Class<?> classToCallBack,String title)
+    public void startPushInService(String senderID,int pushIconID,int imageError,Class<?> classToCallBack,String title)
     {	
     	startPushInService(senderID,pushIconID,pushIconID,classToCallBack,title);
     }
 	
-    public void startPushInService(String senderID, int pushIconID, int statusbarIconID, Class<?> classToCallBack, String title)
+    public void startPushInService(String senderID, int pushIconID, int statusbarIconID, int imageError ,Class<?> classToCallBack, String title)
 	{
-    	startPush(senderID, pushIconID, statusbarIconID, classToCallBack, title, true);
+    	startPush(senderID, pushIconID, statusbarIconID, imageError,classToCallBack, title, true);
 	}
     
-    public void startPush(String senderID, int pushIconID, int statusbarIconID, Class<?> classToCallBack, String title)
+    public void startPush(String senderID, int pushIconID, int statusbarIconID, int imageError ,Class<?> classToCallBack, String title)
 	{
-    	startPush(senderID, pushIconID, statusbarIconID, classToCallBack, title, false);
+    	startPush(senderID, pushIconID, statusbarIconID, imageError, classToCallBack, title, false);
 	}
     
-    public void startPush(String senderID,int pushIconID,Class<?> classToCallBack,String title)
+    public void startPush(String senderID,int pushIconID,int imageError ,Class<?> classToCallBack,String title)
     {	
-    	startPush(senderID,pushIconID,pushIconID,classToCallBack,title);
+    	startPush(senderID,pushIconID,pushIconID,imageError,classToCallBack,title);
     }
     
-	public void startPush(String senderID, int pushIconID, int statusbarIconID, Class<?> classToCallBack, String title , boolean isInService)
+	public void startPush(String senderID, int pushIconID, int statusbarIconID, int imageError, Class<?> classToCallBack, String title , boolean isInService)
 	{
 		if (TextUtils.isEmpty(senderID))
         {
@@ -215,6 +215,7 @@ public class AppVisorPush
     	
     	AppVisorPushUtil.savePushSenderID( this.appContext, senderID );
     	AppVisorPushUtil.savePushIconID( this.appContext, pushIconID );
+    	AppVisorPushUtil.savePushImageError(this.appContext,imageError);
     	AppVisorPushUtil.saveStatusBarIconID( this.appContext, statusbarIconID );
     	AppVisorPushUtil.savePushAppName( this.appContext, title );
     	AppVisorPushUtil.savePushCallbackClassName( this.appContext, classToCallBack.getName() );

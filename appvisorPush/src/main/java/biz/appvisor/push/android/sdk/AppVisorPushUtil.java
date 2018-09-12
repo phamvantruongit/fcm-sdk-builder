@@ -394,6 +394,18 @@ public class AppVisorPushUtil
     	editor.putString( AppVisorPushSetting.SHARED_PREFERENCES_PARA_SENDER_ID , sender_id);
     	editor.commit();
     }
+
+    static void savePushImageError(Context context ,int imageError){
+        SharedPreferences prefer = context.getSharedPreferences(AppVisorPushSetting.SHARED_PREFERENCES_KEY ,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefer.edit();
+        editor.putInt(AppVisorPushSetting.SHARED_PREFERENCES_PARA_APP_IMAGE_ERROR ,imageError);
+        editor.commit();
+    }
+
+    static int getPushImageError(Context context){
+        SharedPreferences prefer = context.getSharedPreferences(AppVisorPushSetting.SHARED_PREFERENCES_KEY ,Context.MODE_PRIVATE);
+        return prefer.getInt(AppVisorPushSetting.SHARED_PREFERENCES_PARA_APP_IMAGE_ERROR,0);
+    }
     
     //load Push Callback Class Name
     static String getPushCallbackClassName(Context context)

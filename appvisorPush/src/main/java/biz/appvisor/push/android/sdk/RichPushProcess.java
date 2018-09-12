@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -115,6 +116,8 @@ public class RichPushProcess implements CommonAsyncTack.AsyncTaskCallback {
         builder.setStyle(this.notificationStyle(image));
 
         this.notificationManager.notify(this.richPush.pushId(), this.buildNotification(builder));
+
+
     }
 
     private void fireWebNotification()
@@ -274,7 +277,16 @@ public class RichPushProcess implements CommonAsyncTack.AsyncTaskCallback {
                     .setSummaryText(this.notificationMessage());
         }
 
-        return new NotificationCompat.BigTextStyle().bigText(this.notificationMessage());
+        int imageError=AppVisorPushUtil.getPushImageError(this.applicationContext);
+        Resources resources = this.applicationContext.getResources();
+        Bitmap image_Error = BitmapFactory.decodeResource(resources,
+                imageError);
+        Bitmap bigPictureImageError = AppVisorPushUtil.BitmapResizeHelper.resizeToBigPictureSize(image_Error, this.applicationContext);
+
+        return new NotificationCompat.BigPictureStyle()
+                .bigPicture(bigPictureImageError)
+                .setBigContentTitle(this.notificationTitle())
+                .setSummaryText(this.notificationMessage());
     }
 
     private void openImageDialog(Bitmap image)
